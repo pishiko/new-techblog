@@ -1,4 +1,7 @@
-`cd html`
-`npm run build`
-`cd ../ssg`
-`pipenv run python ./buildpy`
+## setup
+```
+$ cd html
+$ npm run build
+$ cd ../ssg
+$ pipenv run python ./buildpy
+```
