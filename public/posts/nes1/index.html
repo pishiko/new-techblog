@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Go ファミコンエミュレータ開発記録 その1</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.0/css/all.css">
+    <link rel="icon" type="image/png" href="/assets/favicons/icon-32x32.png" />
+    <link rel="apple-touch-icon" href="/assets/favicons/apple-touch-icon-152x152.png">
+    <meta property="og:title" content="Go ファミコンエミュレータ開発記録 その1" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://blog.p4ko.com/posts/nes1" />
+    <meta property="og:image" content="https://blog.p4ko.com/assets/ogp.png" />
+    <meta property="og:site_name" content="blog.p4ko.com" />
+    <meta name="twitter:card" content="summary" />
+</head>
+
+<body>
+    <header>
+        <div class="section box">
+            <div class="header-inner inner grid is-center">
+                <a class="poszero-button grid is-center" href="/">
+                    <svg class="poszero" width="37" height="34" viewBox="0, 0, 37, 34"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="0,0 37,0 37,18 27,18 27,34 10,34 10,18 0,18" fill="#FFA9D4" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+        </div>
+    </header>
+    <section class="section article-title">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+            <div class="text text-title">Go ファミコンエミュレータ開発記録 その1</div>
+            <p>2020-11-22</p>
+            <div class="box is-flex is-baseline is-margin-bottom-xxl">
+                <a href="https://twitter.com/intent/tweet?text=Go ファミコンエミュレータ開発記録 その1%20%7C%20%40pishitaro_%0Ahttps%3A%2F%2Fblog.p4ko.com%2Fposts%2Fnes1%2F"
+                    target="_blank" rel="noopener"><i class="fa-brands fa-square-twitter fa-2xl"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section article">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+
+            <div class="wysiwyg">
+                <p><a href="https://github.com/pishiko/gones" target="_blank" rel="noopener noreferrer">https://github.com/pishiko/gones</a><br>日記みたいなものです． Twitter モーメントは<a href="https://twitter.com/i/events/1327738675799625729" target="_blank" rel="noopener noreferrer">こちら</a></p><h2 id="hcce6a8de97"><br>動機</h2><p>任天堂レトロハードが好きなんですが，せっかくなら遊ぶだけじゃなくて中身にも詳しくなりたいと思っていました． 一番好きなのはスーファミなんですが，仕様が公開されておらず難易度が高そうなので，とりあえずシンプルそうなファミコンの動作の理解をしようと． で，前に Qiita でファミコンエミュレータの Hello world 解説記事があったのを思い出したので，今ならできる！と思って始めました．<br>偉大なる先駆者様&nbsp;<a href="https://qiita.com/bokuweb/items/1575337bef44ae82f4d3" target="_blank" rel="noopener noreferrer">ファミコンエミュレータの創り方　- Hello, World!編 - - Qiita</a></p><h2 id="h52a7ac4133"><br><br>Python で実装したい！</h2><p>最初は他の人がまだやっていないものを作りたくて，Python で書いて matplot のグラフ出力画面で動いたらオツだよな～と思って書いていたのですが，普通に CPU が 60fps でないので泣く泣く諦めました．<br>これは果たされなかった夢の跡です．</p><blockquote class="twitter-tweet"><p lang="ja" dir="ltr">こちらがファミコンエミュレータ開発におけるHello, world!です <a href="https://t.co/mh6WyX4cFb">pic.twitter.com/mh6WyX4cFb</a></p>&mdash; pishiko (@pishitaro_) <a href="https://twitter.com/pishitaro_/status/1321881564184150016?ref_src=twsrc%5Etfw">October 29, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script><p><br>実装の流れは，ROM reader-&gt;CPU（Adressing -&gt; OP -&gt; WRAM read/write）-&gt; PPU( VRAM read/write -&gt;Line 生成-&gt;描画 )でした．</p><h2 id="h7064f575dc"><br>Go 編</h2><p>ということで，妥協して golang を採用しました． python は 8bit で uint として数値を扱えないので書きにくかったのですが，Go は圧倒的に楽でした．<br>Python のソースコードをほぼ移植する形で，HelloWorld を実行したところ CPU は 60fps 十分に出ました．最高！</p><blockquote class="twitter-tweet"><p lang="ja" dir="ltr">NESエミュ開発進捗メモ<br>・60fpsでないのでPythonをやめてGoで実装した<br>・Hello worldで60fpsが出るようにした <a href="https://t.co/eCUZ37p2tg">pic.twitter.com/eCUZ37p2tg</a></p>&mdash; pishiko (@pishitaro_) <a href="https://twitter.com/pishitaro_/status/1325931588119523328?ref_src=twsrc%5Etfw">November 9, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script><p><br></p><h3 id="hee49796c73"><br>PPU 60fps 計画</h3><p>PPU を実装する前にどうやって出力するかを考えました．その中で，golang 製 2D ゲームエンジンの「Ebiten」がよさげだったので採用しました．<br><a href="https://ebiten.org/" target="_blank" rel="noopener noreferrer">Ebiten - A dead simple 2D game library for Go</a><br><br><strong>採用理由</strong></p><ul><li>名前がかわいい</li><li>ゲームライブラリなので低レイヤは触る必要が無さげ</li><li>コライダーの機能などは実装されていないため，無駄がなく早そう</li><li>日本製</li></ul><p>で，実装してみたところ Hello world は出力できたんですが，8fps くらいでした．<br>何故かというと以下の様に，タイル 1 枚のパレット情報（00~11）のスライスを用意しておいて，それを毎回 NewImage していたからです．</p><pre><code>p.background.DrawImage(
+            ebiten.NewImageFromImage(&amp;image.RGBA{
+                Pix:    tile,
+                Stride: 8 * 4,
+                Rect:   image.Rect(0, 0, 8, 8),
+            }),
+            op,
+        )</code></pre><p>どうも NewImageFromImage 及び Image の初期化が遅いみたいでした．<br>ということで，早くします． ebiten.Image を色なしで，パレットのインデックス（00,01,10,11）ごとにマスクになるような形であらかじめ 4 枚作っておきます． 描画時は pallet の色を取得して，DrawImageOptions で指定します．1 色ごとに 4 枚の Image を貼り付けます．</p><pre><code>for i := 0; i &lt; 4; i++ {
+            op := &amp;ebiten.DrawImageOptions{}
+            op.GeoM.Translate(float64(tilex*8), float64(tiley*8))
+            c := nesColor[p.vRAM[pHead+i]]
+            op.ColorM.Scale(float64(c[0]), float64(c[1]), float64(c[2]), 1)
+            p.background.DrawImage(p.tiles[nameTable[tilex]+patternOffset][i], op)
+        }</code></pre><p>これで，晴れて 60fps になりました．<br>関係ないですが，Ebiten は公式ドキュメントが充実しすぎてて，それで記事を書いてもらえずイマイチ盛り上がってないような…</p><h2 id="h5e7552ddc5"><br><br>Hello world の後</h2><p>ｷﾞｺ猫でもわかるさんの解説で機能の概要を理解して，細かい仕様は Nesdev wiki で仕様を把握しました．<br><a href="http://gikofami.fc2web.com/index.html" target="_blank" rel="noopener noreferrer">ｷﾞｺ猫でもわかるファミコンプログラミング</a><br><a href="https://wiki.nesdev.com/w/index.php/NES_reference_guide" target="_blank" rel="noopener noreferrer">NES reference guide - Nesdev wiki</a><br>以下は実装した順の流れです．</p><h3 id="hf12edbbb19"><br>スプライト描画</h3><p>この辺の仕様は図があると分かりやすいです．&nbsp;<a href="https://qiita.com/bokuweb/items/1575337bef44ae82f4d3#ppu" target="_blank" rel="noopener noreferrer">ファミコンエミュレータの創り方　- Hello, World!編 - - Qiita</a></p><h3 id="h46b72b82be"><br>スプライト DMA</h3><p>ｷﾞｺ猫さん<a href="http://gikofami.fc2web.com/nes/nes009.html" target="_blank" rel="noopener noreferrer">第９章</a>．</p><h3 id="hee41a94c54"><br>入力実装</h3><p>(この時のスクロールは仕様を勘違いしていてダメダメです．)</p><blockquote class="twitter-tweet"><p lang="ja" dir="ltr">NESエミュ開発進捗メモ<br>・PAD入力，BGスクロール対応<br><br>nestestでひたすらCPUのトラップ実装とバグ取りやったので，次は非公式OP実装 <a href="https://t.co/EpNYvIvLbQ">pic.twitter.com/EpNYvIvLbQ</a></p>&mdash; pishiko (@pishitaro_) <a href="https://twitter.com/pishitaro_/status/1326634566614876160?ref_src=twsrc%5Etfw">November 11, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script><p><br></p><h3 id="he138eb1185"><br>CPU のバグ</h3><p>CPU がうまく動いていないと PPU のデバッグもつらいので，先にバグ取りをすることにしました．<br>やることは，<a href="http://nickmass.com/images/nestest.nes" target="_blank" rel="noopener noreferrer">nestest</a>ROM を 0xC000 から動かして，<a href="https://www.qmtpro.com/~nes/misc/nestest.log" target="_blank" rel="noopener noreferrer">log</a>と照らし合わせるだけです．diff 用の PC だけのログは<a href="https://gist.github.com/pishiko/508044bcdfe4911f34284970db7f9826" target="_blank" rel="noopener noreferrer">ここ</a>に置いておきます．<br>バグではなく仕様で引っかかったのは以下です．</p><ul><li>Push/Pop 時の StatusReg の，5bit 目は常に 1，</li><li>4bit 目は，Push 時，PHP と BRK は常に 1，IRQ と NMI は常に 0</li><li>Pop 時は無視する</li><li><a href="https://wiki.nesdev.com/w/index.php/Status_flags" target="_blank" rel="noopener noreferrer">https://wiki.nesdev.com/w/index.php/Status_flags</a></li><li>adressing の桁上がりにおいて，繰り上げは無視する． 例えば Xindirect($FF)など，</li><li><a href="https://kikb.web.fc2.com/6502/index.html" target="_blank" rel="noopener noreferrer">https://kikb.web.fc2.com/6502/index.html</a></li><li>LSR は A またはメモリをシフトする&nbsp;<a href="http://hp.vector.co.jp/authors/VA042397/nes/6502.html" target="_blank" rel="noopener noreferrer">http://hp.vector.co.jp/authors/VA042397/nes/6502.html</a></li><li>0x**FF をまたぐジャンプはおかしな挙動をする（これも繰り上げ無視） 例えば JMP 30ff は，30ff と 3000 からフェッチする</li><li><a href="http://pgate1.at-ninja.jp/NES_on_FPGA/nes_cpu.htm" target="_blank" rel="noopener noreferrer">http://pgate1.at-ninja.jp/NES_on_FPGA/nes_cpu.htm</a></li></ul><p>ちなみに，非公式 OPcode は実装しませんでした．nestest の半分くらいからは非公式 OPcode なので無視していいと思います．</p><h3 id="h0d68a73935"><br>0 爆弾</h3><p>ｷﾞｺ猫さん<a href="http://gikofami.fc2web.com/nes/nes015.html" target="_blank" rel="noopener noreferrer">第１５章</a><br>スプライト RAM の 0 個目のスプライトが特定の状態で描画されると PPU レジスタの 0x2002 の 6bit が立つというものです．</p><h3 id="h2d9476aaa3"><br>スクロール</h3><p>PPU のミラーリング，スクロールインデックスを実装します． この辺が一番難しかったです．<br>これはうまくいってないけど絵的に面白いマリオ．</p><blockquote class="twitter-tweet"><p lang="ja" dir="ltr">マリオ，世紀末だけどなんとなく遊べるとこまできた <a href="https://t.co/urr7qwrx7s">pic.twitter.com/urr7qwrx7s</a></p>&mdash; pishiko (@pishitaro_) <a href="https://twitter.com/pishitaro_/status/1326973010989862913?ref_src=twsrc%5Etfw">November 12, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script><p><br>まだノイズ入りですが giko016 が形になってるのがこれ</p><blockquote class="twitter-tweet"><p lang="ja" dir="ltr">NESエミュ開発進捗メモ<br>・PPU描画部を変更，スクロールほぼ対応（0爆弾含む）<br>・VRAMのミラーリングを実装<br><br>PPUのバグ取りがかなりしんどかったです．なおgiko016はまだノイズが <a href="https://t.co/I9GXLTSbEJ">pic.twitter.com/I9GXLTSbEJ</a></p>&mdash; pishiko (@pishitaro_) <a href="https://twitter.com/pishitaro_/status/1327734486944018432?ref_src=twsrc%5Etfw">November 14, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script><p><br></p><h3 id="hbc6ff2ef68"><br>マリオの空を青くする</h3><p>PPU パレットのミラーリングの実装が必要です． アドレス$ 3F10 / $ 3F14 / $ 3F18 / $ 3F1C は、$ 3F00 / $ 3F04 / $ 3F08 / $ 3F0C のミラーです．&nbsp;<a href="https://wiki.nesdev.com/w/index.php/PPU_palettes" target="_blank" rel="noopener noreferrer">https://wiki.nesdev.com/w/index.php/PPU_palettes</a><br>スプライトの優先順位などはまだ実装してないからいいとして，</p><ul><li>マリオや敵キャラが左に移動するとすぐ画面左端に瞬間移動する</li><li>雲の背景が黒くなる</li></ul><p>というバグが残っています．<br><br><br>ToBeContinued…</p><h2 id="hcd411b4dc4"><br>次回予告</h2><p>APU 実装編</p><blockquote class="twitter-tweet"><p lang="ja" dir="ltr">オーディオをちょっとだけ実装した（酷い） <a href="https://t.co/SvqHA8PwQN">pic.twitter.com/SvqHA8PwQN</a></p>&mdash; pishiko (@pishitaro_) <a href="https://twitter.com/pishitaro_/status/1328451139914776578?ref_src=twsrc%5Etfw">November 16, 2020</a></blockquote><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script><p><br></p>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

@@ -8,6 +8,9 @@ load_dotenv()
 API_BASE_URI = os.getenv('API_BASE_URI')
 MICROCMS_TOKEN = os.getenv('MICROCMS_TOKEN')
 
+if not MICROCMS_TOKEN:
+    MICROCMS_TOKEN = ""
+
 @dataclass
 class Article:
     url:str

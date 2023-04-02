@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Hugoで個別ページを作る</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.0/css/all.css">
+    <link rel="icon" type="image/png" href="/assets/favicons/icon-32x32.png" />
+    <link rel="apple-touch-icon" href="/assets/favicons/apple-touch-icon-152x152.png">
+    <meta property="og:title" content="Hugoで個別ページを作る" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://blog.p4ko.com/posts/addstaicpage" />
+    <meta property="og:image" content="https://blog.p4ko.com/assets/ogp.png" />
+    <meta property="og:site_name" content="blog.p4ko.com" />
+    <meta name="twitter:card" content="summary" />
+</head>
+
+<body>
+    <header>
+        <div class="section box">
+            <div class="header-inner inner grid is-center">
+                <a class="poszero-button grid is-center" href="/">
+                    <svg class="poszero" width="37" height="34" viewBox="0, 0, 37, 34"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="0,0 37,0 37,18 27,18 27,34 10,34 10,18 0,18" fill="#FFA9D4" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+        </div>
+    </header>
+    <section class="section article-title">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+            <div class="text text-title">Hugoで個別ページを作る</div>
+            <p>2021-07-02</p>
+            <div class="box is-flex is-baseline is-margin-bottom-xxl">
+                <a href="https://twitter.com/intent/tweet?text=Hugoで個別ページを作る%20%7C%20%40pishitaro_%0Ahttps%3A%2F%2Fblog.p4ko.com%2Fposts%2Faddstaicpage%2F"
+                    target="_blank" rel="noopener"><i class="fa-brands fa-square-twitter fa-2xl"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section article">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+
+            <div class="wysiwyg">
+                <h2 id="h9f510f3156">やりたいこと</h2><p>Hugo でブログを書いて，About やポートフォリオなどの特別なページを作りたい．<br>通常投稿のテンプレートではなく，独自のスタイルのテンプレートを利用したい．<br><br></p><h2 id="h087b4efba0">やり方</h2><p>目標は</p><pre><code>p4ko.com/posts/通常投稿/
+p4ko.com/posts/通常投稿2/
+p4ko.com/プロダクト/                 👈特別なページ</code></pre><p>ファイル構成は</p><pre><code>/content/posts/通常投稿.md
+/content/posts/通常投稿2.md
+/content/プロダクト.md               👈追加ページ
+
+/layouts/custom/product.html        👈独自テンプレート</code></pre><p><code>プロダクト.md</code>の frontmatter に次を追加します（YAML の場合）</p><pre><code>---
+type: "custom"
+layout: "product"
+---</code></pre><p><code>product.html</code>にテンプレートを書きます． テーマの通常投稿のテンプレート（<code>/themes/HOGE/layouts/_default/single.html</code>）をコピーして弄るとよいと思います．<br>完全にベタ書きしたい場合は markdown の本文は空でもいいですし，もしくはテンプレート<code>{{ .Content }}</code>から本文を取ってきてもよいです．<br><br></p><h2 id="he3588b532b">あとがき</h2><h3 id="hd2c91c24e4">経緯</h3><p>日本語の情報が無かったので書きました．<br>制作物まとめのページを以前から通常の投稿として置いていたのですが，もうちょっと見た目を良くしたかったので，追加テンプレートから生成するよう（というかほぼベタ書き）にしました．👇<br><a href="file:///G:/product/">⭐ 制作物まとめ ⭐ // ぴしめも</a><br><br></p><h3 id="h3de35099b3">参考</h3><p><a href="https://discourse.gohugo.io/t/creating-static-content-that-uses-partials/265/18" target="_blank" rel="noopener noreferrer">Creating ‘static’ content that uses partials - support - HUGO</a><br>おわり</p>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

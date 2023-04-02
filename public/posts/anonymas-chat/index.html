@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>匿名LINEチャットルームを作った</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.0/css/all.css">
+    <link rel="icon" type="image/png" href="/assets/favicons/icon-32x32.png" />
+    <link rel="apple-touch-icon" href="/assets/favicons/apple-touch-icon-152x152.png">
+    <meta property="og:title" content="匿名LINEチャットルームを作った" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://blog.p4ko.com/posts/anonymas-chat" />
+    <meta property="og:image" content="https://blog.p4ko.com/assets/ogp.png" />
+    <meta property="og:site_name" content="blog.p4ko.com" />
+    <meta name="twitter:card" content="summary" />
+</head>
+
+<body>
+    <header>
+        <div class="section box">
+            <div class="header-inner inner grid is-center">
+                <a class="poszero-button grid is-center" href="/">
+                    <svg class="poszero" width="37" height="34" viewBox="0, 0, 37, 34"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="0,0 37,0 37,18 27,18 27,34 10,34 10,18 0,18" fill="#FFA9D4" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+        </div>
+    </header>
+    <section class="section article-title">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+            <div class="text text-title">匿名LINEチャットルームを作った</div>
+            <p>2020-04-01</p>
+            <div class="box is-flex is-baseline is-margin-bottom-xxl">
+                <a href="https://twitter.com/intent/tweet?text=匿名LINEチャットルームを作った%20%7C%20%40pishitaro_%0Ahttps%3A%2F%2Fblog.p4ko.com%2Fposts%2Fanonymas-chat%2F"
+                    target="_blank" rel="noopener"><i class="fa-brands fa-square-twitter fa-2xl"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section article">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+
+            <div class="wysiwyg">
+                <h2 id="h9707d3a59a">概要</h2><p><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/5822fd7f901b43388f353fae38af9544/chat.png?w=320&amp;h=568" alt=""><br>LINE の Bot を公開しました。<br>いままで身内向けの BOT を作ることはあったけど、初めてオープンなのを作りました。<br>LINE の BOT を作るには HTTP リクエストを受けるサーバーが必要なんですが、サーバーを立てるのはお金がかかります。そこで今回は無料でそれっぽいことができる GoogleAppsScript を用いてやってみました。<br>ソースコード&nbsp;<a href="https://github.com/pishiko/anonymous-linechatbot" target="_blank" rel="noopener noreferrer">https://github.com/pishiko/anonymous-linechatbot</a></p><h2 id="h91abbb51e5"><br><br>実装したこと</h2><ul><li>基本機能（発言を他の利用者に拡散）</li><li>アイコンの実装</li><li>ミュート機能</li></ul><h2 id="hc499e4ad38"><br><br>解説</h2><p><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/a13255c8bc5a48958ed876ca5a8f6020/chat2.png?w=720&amp;h=311" alt=""><br>まず LINE API で多数にメッセージを配信するには宛先の userId を指定する必要があります。しかし、Bot と友達になっているユーザーのリストは API では手に入らないため、自分で用意する必要があります。なので、友達登録されたときのイベントを使って記録していきます。<br>次に記録ですが、DB を GAS でお手軽に実装するには GoogleSpreadSheet を用います。視覚的にも分かりやすいし簡単だし、ちょっと遅いけど使えます。<br>アイコンはキューを GSS で実装して、友達登録時にユーザーリストに ID と一緒にします。友達をやめたときはアイコンキューに戻してやって、ユーザーリストから ID ごと消してやります。<br>ミュート機能はユーザーがミュートかどうかリストに保存して、LINE API のリッチメニューから操作できるようにします。リッチメニューは LINE&nbsp;@MANAGER&nbsp;からぽちぽちで作れます。リッチメニューのボタンが押されたらキーワードを発言するように設定して、それを GAS でキャッチします。<br>最後に発言をほかの登録者に拡散するようにします。LINE API のイベントでメッセージ受信をキャッチして、userId からユーザーリストを検索してアイコンを取得、そのあとユーザーリストの発信者以外かつミュートになっていない人に成形したメッセージを配信します。<br><br><br>おわり</p>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

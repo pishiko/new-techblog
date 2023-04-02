@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Youtubeの共有を便利にするWeb Appを作った</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.0/css/all.css">
+    <link rel="icon" type="image/png" href="/assets/favicons/icon-32x32.png" />
+    <link rel="apple-touch-icon" href="/assets/favicons/apple-touch-icon-152x152.png">
+    <meta property="og:title" content="Youtubeの共有を便利にするWeb Appを作った" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://blog.p4ko.com/posts/youtube-share-hub" />
+    <meta property="og:image" content="https://blog.p4ko.com/assets/ogp.png" />
+    <meta property="og:site_name" content="blog.p4ko.com" />
+    <meta name="twitter:card" content="summary" />
+</head>
+
+<body>
+    <header>
+        <div class="section box">
+            <div class="header-inner inner grid is-center">
+                <a class="poszero-button grid is-center" href="/">
+                    <svg class="poszero" width="37" height="34" viewBox="0, 0, 37, 34"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="0,0 37,0 37,18 27,18 27,34 10,34 10,18 0,18" fill="#FFA9D4" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+        </div>
+    </header>
+    <section class="section article-title">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+            <div class="text text-title">Youtubeの共有を便利にするWeb Appを作った</div>
+            <p>2020-03-29</p>
+            <div class="box is-flex is-baseline is-margin-bottom-xxl">
+                <a href="https://twitter.com/intent/tweet?text=Youtubeの共有を便利にするWeb Appを作った%20%7C%20%40pishitaro_%0Ahttps%3A%2F%2Fblog.p4ko.com%2Fposts%2Fyoutube-share-hub%2F"
+                    target="_blank" rel="noopener"><i class="fa-brands fa-square-twitter fa-2xl"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section article">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+
+            <div class="wysiwyg">
+                <h2 id="h98fa12d6b3">Youtube Share Hub を作った</h2><p>→<a href="https://pishiko.github.io/youtube-share-hub/" target="_blank" rel="noopener noreferrer">https://pishiko.github.io/youtube-share-hub/</a></p><h2 id="hbc27638939"><br>どんなの？</h2><p>こんなの<br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/07aad69fd857407f81f0175cadbaa24d/youshare.gif" alt=""><br>Youtube の共有メニューから選択してツイートのリンクに遷移する web アプリケーション<br>そのまま共有しても URL しか共有できないし Twitter カードも表示されないから不便だったので作りました．<br><br></p><h2 id="h9e34f1d7ed">どんな技術使った？</h2><ul><li>PWA<ul><li>Web Share Target API</li></ul></li><li>vue.js</li><li>bootstrap</li><li>Github Pages</li></ul><h2 id="hade8907641"><br><br>PWA について</h2><p>最低構成は以下．</p><h3 id="h00fdc3cb35"><br>index.html</h3><p>メインのアプリ</p><h3 id="haabc4d4b1d"><br>serviceworker.js</h3><p>ServiceWorker が動くことでオフラインでもキャッシュで動作したりすることが可能，特にやりたいことが無ければ関数は空でもいい</p><h3 id="had56a1cc00"><br>manifest.json</h3><p>これがキモ．アプリの名前，アイコンから，共有メニューからの動作まで設定できる． 楽ちんジェネレーターもある．アイコンもリサイズしてくれる．<a href="https://app-manifest.firebaseapp.com/" target="_blank" rel="noopener noreferrer">https://app-manifest.firebaseapp.com/</a></p><h2 id="h764889fab5"><br><br>Web Share Target API</h2><p>apk のアプリみたいに共有機能が使える．ただし，「なんちゃってホームに追加 Web アプリ」とかじゃこの機能は使えない．<br>Chrome から PWA アプリと認められる条件は以下</p><ul><li>アイコンが png であること．jpg はだめ</li><li>ServiceWorker を用意する</li><li>manifest.json が正しく記述されている</li></ul><p>それから，Web Share API は今のところ Android でないと使えない．たのむよ Apple．</p><h2 id="h3857291aa0"><br><br>そのほか</h2><p>メインは vue.js で実装．丁寧にエラー処理なども書いた． デザインは bootstrap．楽． Github Pages はこのブログ立ち上げた時と一緒．<br>Github Pages なので，ソースコードはここにあります．&nbsp;<a href="https://github.com/pishiko/youtube-share-hub" target="_blank" rel="noopener noreferrer">https://github.com/pishiko/youtube-share-hub</a><br>おわり</p>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

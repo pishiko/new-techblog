@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Dash Buttonサービス終了との闘い(敗北)</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.0/css/all.css">
+    <link rel="icon" type="image/png" href="/assets/favicons/icon-32x32.png" />
+    <link rel="apple-touch-icon" href="/assets/favicons/apple-touch-icon-152x152.png">
+    <meta property="og:title" content="Dash Buttonサービス終了との闘い(敗北)" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://blog.p4ko.com/posts/dash-button" />
+    <meta property="og:image" content="https://blog.p4ko.com/assets/ogp.png" />
+    <meta property="og:site_name" content="blog.p4ko.com" />
+    <meta name="twitter:card" content="summary" />
+</head>
+
+<body>
+    <header>
+        <div class="section box">
+            <div class="header-inner inner grid is-center">
+                <a class="poszero-button grid is-center" href="/">
+                    <svg class="poszero" width="37" height="34" viewBox="0, 0, 37, 34"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="0,0 37,0 37,18 27,18 27,34 10,34 10,18 0,18" fill="#FFA9D4" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+        </div>
+    </header>
+    <section class="section article-title">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+            <div class="text text-title">Dash Buttonサービス終了との闘い(敗北)</div>
+            <p>2020-02-17</p>
+            <div class="box is-flex is-baseline is-margin-bottom-xxl">
+                <a href="https://twitter.com/intent/tweet?text=Dash Buttonサービス終了との闘い(敗北)%20%7C%20%40pishitaro_%0Ahttps%3A%2F%2Fblog.p4ko.com%2Fposts%2Fdash-button%2F"
+                    target="_blank" rel="noopener"><i class="fa-brands fa-square-twitter fa-2xl"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section article">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+
+            <div class="wysiwyg">
+                <p><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/0c05b1ebacc8435f9455c923d5284021/IMG_20200217_094801.jpg" alt=""></p><h2 id="h9ced1f0f73"><br>要約</h2><ul><li>Amazon Dash Button をハックして IoT ボタンにしてた</li><li>2020 年に入ってから使えなくなってた</li><li>自爆ファームウェアの配信によって文鎮化されてた</li></ul><h2 id="h911ff91c4f"><br>昔々…</h2><p>実家暮らしなので母親にご飯を作っていただいているので，ご飯ができると「ご飯できたよ～」と呼ばれます．それがお互いにストレスだったので，キッチンには，押すと<a href="https://www.pushbullet.com/" target="_blank" rel="noopener noreferrer">Push Bullet</a>というサービスからスマホや PC に通知が行くボタンが置いてありました．<br>仕組みとしては，</p><ol><li>商品発注をオフにした Amazon Dash Button が押される</li><li>自宅のサーバで検知（ボタンからの ARP リクエストをキャッチ）</li><li>IFTTT を通して Push Bullet に通知</li></ol><p>といったものでした．</p><h2 id="h5aea6ada51"><br>ところが</h2><p>動かなくなってました．とりあえず初期化しようと思って Amazon アプリから設定しようとしたのですが，設定項目がありませんでした．もしやと思って調べてみたら…</p><blockquote>Dash Button 端末を使用した商品の注文は、2019 年 8 月 31 日で終了しています。<br>端末は 2019 年 12 月 31 日に自動的に登録解除およびリセットされるため、お客様による操作は必要ありません。なお、Dash Button 端末を廃棄する前に手動での登録解除をご希望の場合は、<a href="https://www.amazon.co.jp/mycd" target="_blank" rel="noopener noreferrer">コンテンツと端末の管理</a>にアクセスして、<strong>端末</strong>タブから登録を解除できます。お使いの Dash Button を選択し、<strong>登録の解除</strong>をクリックしてください。最後に、Dash Button 端末を 1 回押します。ライトが白く点滅した後、赤く点灯します。</blockquote><p><a href="https://www.amazon.co.jp/gp/help/customer/display.html?nodeId=201706050" target="_blank" rel="noopener noreferrer">https://www.amazon.co.jp/gp/help/customer/display.html?nodeId=201706050</a><br>とのこと．<br><strong>サービス終了…</strong></p><h2 id="h117150cc01"><br>自爆とは</h2><p>どうやら 2020 年になってからボタンを押してアマゾンのサーバにリクエストを送ると，<strong>文鎮化するファームウェアアップデート</strong>が実行される模様． スパイ映画でよく見た「なお，このメッセージは自動的に消滅する．」ってやつだ…</p><h2 id="h420fc179e1"><br>ネットワークから遮断</h2><p>とりあえず Dash Button Hack ライブラリの&nbsp;<a href="https://github.com/Nekmo" target="_blank" rel="noopener noreferrer">Nekmo</a>/<a href="https://github.com/Nekmo/amazon-dash" target="_blank" rel="noopener noreferrer"><strong>amazon-dash</strong></a>&nbsp;によると，<code>dash-button-na-aws-opf.amazon.com</code>,&nbsp;<code>0.amazon.pool.ntp.org</code>,&nbsp;<code>1.amazon.pool.ntp.org</code>,&nbsp;<code>2.amazon.pool.ntp.org</code>,&nbsp;<code>3.amazon.pool.ntp .org</code>からのパケットをブロックすればよいとのこと．<br>ちなみに ntp.org ってなんだろうと思ったら Network Time Protocol プロトコルというものっぽい．ネットワーク機器の時間同期に用いるとか．<br><strong>→ まだだめ</strong></p><h2 id="h337f6b2a7f"><br>Wi-Fi の設定</h2><p>再設定を試みます．Amazon のアプリには存在しないため，非公式のスクリプトを用いて設定します．&nbsp;<a href="https://gist.github.com/fffonion" target="_blank" rel="noopener noreferrer">fffonion</a>/<a href="https://gist.github.com/fffonion/d4960503ff6782640286163d47a30080" target="_blank" rel="noopener noreferrer"><strong>setup-dashbutton.py</strong></a><br>スクリプトの中身自体は，</p><ul><li>Dash ボタン長押しで設定モードにする</li><li>Amazon ConfigureMe という SSID に接続</li><li>http://192.168.0.1/?amzn_ssid=SSID&amp;amzn_pw=PASS にアクセス</li></ul><p>て感じでシンプルです．<br><strong>→ でもだめ</strong></p><h2 id="h853ae6ec30"><br>最後の手段</h2><p><a href="https://blog.christophermullins.com/2019/12/20/rescue-your-amazon-dash-buttons/" target="_blank" rel="noopener noreferrer">https://blog.christophermullins.com/2019/12/20/rescue-your-amazon-dash-buttons/</a>によると，</p><ul><li>ファームウェアアップデートを一度でもしてしまったら終わり</li><li>一度 Wi-Fi の設定をしたことがあるボタンのみ Wi-Fi の再設定が可能</li><li>ただし古いボタンなら特定の音声を流すことで初期設定が可能</li></ul><p>特定の音声っていうのは，ボタンにはマイクがついていて，それによって設定が可能らしい．で，それでバッファの長さチェックがされていないので，オーバーフローさせていい感じにできるらしいです． ふわふわしてますね． その音声ファイルは<a href="https://github.com/sidoh/dashbutton/raw/master/audio_exploit/write_customer_secret.s.wav" target="_blank" rel="noopener noreferrer">ここ .wav file</a>にあるそうです．<br>てな感じで，&nbsp;<strong>詰みました．完全に．</strong></p><h2 id="h9be0c3393d"><br>おわりに</h2><p>やらかしました．ちゃんと情報を仕入れていれば… 便利だったのになあ…<br>とりあえずスマホかなんかで仮想ボタンみたいなものを作ろうと思います…</p>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

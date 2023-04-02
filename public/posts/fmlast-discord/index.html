@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Discordのnowplayingに音楽を表示させるのを作った</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.0/css/all.css">
+    <link rel="icon" type="image/png" href="/assets/favicons/icon-32x32.png" />
+    <link rel="apple-touch-icon" href="/assets/favicons/apple-touch-icon-152x152.png">
+    <meta property="og:title" content="Discordのnowplayingに音楽を表示させるのを作った" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://blog.p4ko.com/posts/fmlast-discord" />
+    <meta property="og:image" content="https://blog.p4ko.com/assets/ogp.png" />
+    <meta property="og:site_name" content="blog.p4ko.com" />
+    <meta name="twitter:card" content="summary" />
+</head>
+
+<body>
+    <header>
+        <div class="section box">
+            <div class="header-inner inner grid is-center">
+                <a class="poszero-button grid is-center" href="/">
+                    <svg class="poszero" width="37" height="34" viewBox="0, 0, 37, 34"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="0,0 37,0 37,18 27,18 27,34 10,34 10,18 0,18" fill="#FFA9D4" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+        </div>
+    </header>
+    <section class="section article-title">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+            <div class="text text-title">Discordのnowplayingに音楽を表示させるのを作った</div>
+            <p>2020-05-09</p>
+            <div class="box is-flex is-baseline is-margin-bottom-xxl">
+                <a href="https://twitter.com/intent/tweet?text=Discordのnowplayingに音楽を表示させるのを作った%20%7C%20%40pishitaro_%0Ahttps%3A%2F%2Fblog.p4ko.com%2Fposts%2Ffmlast-discord%2F"
+                    target="_blank" rel="noopener"><i class="fa-brands fa-square-twitter fa-2xl"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section article">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+
+            <div class="wysiwyg">
+                <p>デスクトップ常駐型アプリケーションを作りました．<br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/55a7da50df4e46c7b7eeafdd9bdeaa90/fmstatus.png" alt=""><br><a href="https://github.com/pishiko/discord-nowplaying" target="_blank" rel="noopener noreferrer">Github</a><br><a href="https://pishiko.github.io/posts/fmlast-discord/" target="_blank" rel="noopener noreferrer">使い方</a></p><h2 id="hcf83e1357e"><br></h2><p><br></p><h2 id="hd2c91c24e4">経緯</h2><h3 id="ha8b296a04e">Last.fm を見つけた</h3><p>ライフログを取るのにハマっていて，GPS とかの記録を取ったりしているのですが，ふと音楽のログも取りたいと思いました．<br>そのようなサービスがないか調べたところ，Last.fm というものがありました． Spotify などと連携して聞いた音楽のログを取り，似た傾向のおすすめの曲を紹介してくれるそうです． 気に入ったのが，ログを取るための API が用意してあり，PC，スマートフォンのあらゆるプレイヤーで記録できるところで，もし対応していなければ開発すればいいのです．</p><h3 id="h64a5b1a4f8"><br>共有したい</h3><p>Last.fm の API リファレンスを見ていたところ今聞いている曲を取得できるのを見つけたので，これで discord の「プレイ中」欄に表示しようと考えたのでした．さりげなさがいい感じなので．</p><h2 id="hcf83e1357e"><br></h2><p><br></p><h2 id="haa4623ab33">使ったもの</h2><ul><li>C# Windows フォームアプリ</li><li>Last.fm API</li><li>Discord RPC (Discord Game SDK の C#ラッパー)</li></ul><h2 id="hcf83e1357e"><br></h2><p><br></p><h2 id="hbb84bb7d76">ポイントなど</h2><h3 id="hd30f767c9d">C#フォームアプリの基本</h3><p>あんまり書く機会がなくて，いつも忘れるので．<br>Form クラスを継承したクラスのインスタンスに初期化処理を書けば動く.<br>定期実行は Timer クラスがあるので，以下で FunctionName に定期実行したい処理を書けばよい．</p><pre><code>var timer = new Timer();
+timer.Interval = 5000; //5s
+timer.Elapsed += FunctionName;
+timer.Enable = true //動き出す</code></pre><h3 id="h2bc143ab70"><br>タスクトレイ常駐</h3><p>参考にしました．&nbsp;<a href="http://pineplanter.moo.jp/non-it-salaryman/2017/06/01/c-sharp-tasktray/" target="_blank" rel="noopener noreferrer">http://pineplanter.moo.jp/non-it-salaryman/2017/06/01/c-sharp-tasktray/</a><br>全部ここに書いてるのですが，やることは</p><ul><li>タスクトレイにアイコンを追加する</li><li>タスクトレイアイコンに終了メニューを追加する</li><li>タスクバーに表示させない</li><li>フォームを表示させない</li></ul><p>です．</p><h3 id="h041f939435"><br>discord RPC</h3><p>ドキュメントが充実しているので特に書くこともないです．&nbsp;<a href="https://github.com/Lachee/discord-rpc-csharp" target="_blank" rel="noopener noreferrer">https://github.com/Lachee/discord-rpc-csharp</a><br>nuget で導入して README のチュートリアル通りに書けばいいです．<br><br>ただ最初は Discord Game SDK でやろうとしていて，文字化け問題に直面したのでかなり苦労しました．Issue→<a href="https://github.com/discord/discord-rpc/issues/119" target="_blank" rel="noopener noreferrer">https://github.com/discord/discord-rpc/issues/119</a><br>ちなみに，昔は GameSDK でなくても RichPeresence を弄れたのですが API が廃止されたので面倒になりました． 昔は同じことをする js 製ツールがあったっぽいのですが，API 廃止で使えなくなっちゃったみたいです．</p><h3 id="h4dd84f08e9"><br>WebAPI を呼ぶ</h3><p>HttpClient を使います．クエリパラメタも URL エンコードできます． その他まとめ →<a href="https://qiita.com/rawr/items/f78a3830d894042f891b" target="_blank" rel="noopener noreferrer">C# 今更ですが、HttpClient を使う - Qiita</a></p><h3 id="h68537f1f8e"><br>動的な Json を処理する</h3><p>動的な，というのは，Last.fm の API を JSON で受け取ると，Nowplaying かどうかで微妙に形が変わるため構造体を作ってそこにぶち込む，という手法が使えない，ということです．<br>Json.NET では動的にメンバが生成される Json オブジェクトが扱えるので，Json.NET を nuget で導入します．<br>面白かったのが，C#には dynamic 型という，Python や JS のように実行時に型が決まる静的な型（型自体は静的，ややこしい）が存在することです．ゆるゆるなので当然実行時エラーガンガンなんですけどね．</p><pre><code>dynamic jsonResponse = JsonConvert.Deserialize(jsonString);
+var m = jsonResponse.member;//</code></pre><p>json で要素が存在するかは，メンバが存在するかなので，以下で判断できます．</p><pre><code>jsonResponse.GetType().GetProperty("member") != null</code></pre><h3 id="h3de35099b3"><br>参考</h3><ul><li><a href="https://stackoverflow.com/questions/4535840/deserialize-json-object-into-dynamic-object-using-json-net" target="_blank" rel="noopener noreferrer">c# - Deserialize json object into dynamic object using Json.net - Stack Overflow</a></li><li><a href="https://stackoverflow.com/questions/9956648/how-do-i-check-if-a-property-exists-on-a-dynamic-anonymous-type-in-c" target="_blank" rel="noopener noreferrer">c# 4.0 - How do I check if a property exists on a dynamic anonymous type in c#? - Stack Overflow</a></li></ul><h2 id="hcf83e1357e"><br></h2><p><br></p><h2 id="h40404d9e9a">おわり</h2><p>Last.fm の API は制限もゆるく太っ腹なのでいろいろ遊べそうです． 楽曲情報も取得できるっぽいのでそれで何かします．</p>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

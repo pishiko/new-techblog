@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Build MediapipeUnityPlugin for Android</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.0/css/all.css">
+    <link rel="icon" type="image/png" href="/assets/favicons/icon-32x32.png" />
+    <link rel="apple-touch-icon" href="/assets/favicons/apple-touch-icon-152x152.png">
+    <meta property="og:title" content="Build MediapipeUnityPlugin for Android" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://blog.p4ko.com/posts/build-mediapipe-unity-plugin" />
+    <meta property="og:image" content="https://blog.p4ko.com/assets/ogp.png" />
+    <meta property="og:site_name" content="blog.p4ko.com" />
+    <meta name="twitter:card" content="summary" />
+</head>
+
+<body>
+    <header>
+        <div class="section box">
+            <div class="header-inner inner grid is-center">
+                <a class="poszero-button grid is-center" href="/">
+                    <svg class="poszero" width="37" height="34" viewBox="0, 0, 37, 34"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="0,0 37,0 37,18 27,18 27,34 10,34 10,18 0,18" fill="#FFA9D4" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+        </div>
+    </header>
+    <section class="section article-title">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+            <div class="text text-title">Build MediapipeUnityPlugin for Android</div>
+            <p>2021-05-17</p>
+            <div class="box is-flex is-baseline is-margin-bottom-xxl">
+                <a href="https://twitter.com/intent/tweet?text=Build MediapipeUnityPlugin for Android%20%7C%20%40pishitaro_%0Ahttps%3A%2F%2Fblog.p4ko.com%2Fposts%2Fbuild-mediapipe-unity-plugin%2F"
+                    target="_blank" rel="noopener"><i class="fa-brands fa-square-twitter fa-2xl"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section article">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+
+            <div class="wysiwyg">
+                <p><a href="https://github.com/homuler/MediaPipeUnityPlugin" target="_blank" rel="noopener noreferrer">homuler/MediaPipeUnityPlugin: Unity plugin to run MediaPipe graphs</a><br></p><h1 id="hf3970662b9">Versions</h1><ul><li>MediapipeUnityPlugin v0.6.0</li></ul><blockquote>This is a Unity (2020.3.8f1) Plugin to use MediaPipe (0.8.3.1).</blockquote><ul><li>WSL2</li><li>Windows10 Home</li><li>Ubuntu20.04</li><li>Python3.9</li><li>bazel 4.0.0</li><li>gcc (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0</li><li>NuGet Version: 5.6.0.6489</li><li>.NET SDK Version: 5.0.203</li><li>Mono 6.12.0.122</li><li>Android SDK Build-Tools 29.0.2</li><li>Android NDK (Side by side) 21.4.7075529</li></ul><h2 id="h1cb35c7ec3"><br>MediaPipeUnityPlugin</h2><p><a href="https://github.com/homuler/MediaPipeUnityPlugin#linux" target="_blank" rel="noopener noreferrer">homuler/MediaPipeUnityPlugin: Unity plugin to run MediaPipe graphs</a></p><pre><code>git clone https://github.com/homuler/MediaPipeUnityPlugin.git
+cd MediaPipeUnityPlugin</code></pre><h2 id="h85bea824bc"><br>OpenCV, FFmpeg</h2><p><a href="https://google.github.io/mediapipe/getting_started/install" target="_blank" rel="noopener noreferrer">Installation - mediapipe</a></p><pre><code>sudo apt install ffmpeg
+sudo apt install libopencv-core-dev libopencv-highgui-dev \
+                       libopencv-calib3d-dev libopencv-features2d-dev \
+                       libopencv-imgproc-dev libopencv-video-dev</code></pre><p>edit&nbsp;<code>WORKSPACE</code></p><pre><code>new_local_repository(
+    name = "linux_opencv",
+    build_file = "@//third_party:opencv_linux.BUILD",
+    path = "/usr/local",
+)
+
+new_local_repository(
+    name = "linux_ffmpeg",
+    build_file = "@//third_party:ffmpeg_linux.BUILD",
+    path = "/usr/local",
+)</code></pre><h2 id="h148bdbe6d1"><br>.NET</h2><p><a href="https://docs.microsoft.com/en-us/dotnet/core/install/linux-ubuntu#how-to-install-other-versions" target="_blank" rel="noopener noreferrer">Install .NET on Ubuntu - .NET | Microsoft Docs</a></p><pre><code>wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+sudo dpkg -i packages-microsoft-prod.deb
+sudo apt update
+sudo apt install -y apt-transport-https
+sudo apt update
+sudo apt install -y dotnet-sdk-5.0</code></pre><h2 id="haaf19fdfa0"><br>Mono</h2><p><a href="https://www.mono-project.com/download/stable/#download-lin" target="_blank" rel="noopener noreferrer">Download - Stable | Mono</a></p><pre><code>sudo apt install gnupg ca-certificates
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+echo  "deb https://download.mono-project.com/repo/ubuntu stable-focal main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list
+sudo apt update
+sudo apt install mono-devel</code></pre><h2 id="ha3d7a05a12"><br>Nuget</h2><pre><code>sudo apt install nuget
+nuget update -self</code></pre><h2 id="h9fd0349fed"><br>JDK</h2><pre><code>sudo apt install openjdk-8-jdk</code></pre><h2 id="h19ff975b93"><br>Bazel</h2><p><a href="https://docs.bazel.build/versions/master/install-bazelisk.html" target="_blank" rel="noopener noreferrer">Installing Bazel using Bazelisk - Bazel</a></p><pre><code>npm install -g @bazel/bazelisk</code></pre><h2 id="hb24491861d"><br>Python3.9</h2><pre><code>sudo apt install -y python3.9
+python3.9 -m pip install numpy</code></pre><h2 id="h5b8172eebe"><br>Android SDK, NDK</h2><p>Download Command line tools from&nbsp;<a href="https://developer.android.com/studio#downloads" target="_blank" rel="noopener noreferrer">Download Android Studio and SDK tools | Android Developers</a>&nbsp;/ Command line tools only</p><pre><code>cd cmdline-tools
+bin/sdkmanager --list --sdk_root=latest
+sudo bin/sdkmanager "build-tools;29.0.2" --sdk_root=latest
+sudo bin/sdkmanager "ndk;21.4.7075529" --sdk_root=latest
+export ANDROID_HOME=/PATH-TO-CMDLINETOOLS/cmdline-tools/latest
+export ANDROID_NDK_HOME=/PATH-TO-CMDLINETOOLS/cmdline-tools/latest/ndk/21.4.7075529</code></pre><h2 id="hf202c9a0b6"><br>Build</h2><pre><code>cd MediaPipeUnityPlugin
+python3.9 build.py build --android arm64 -v</code></pre><h2 id="hf0d6447411"><br><br>Done!</h2>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

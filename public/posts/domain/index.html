@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>新ドメインにしました</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.0/css/all.css">
+    <link rel="icon" type="image/png" href="/assets/favicons/icon-32x32.png" />
+    <link rel="apple-touch-icon" href="/assets/favicons/apple-touch-icon-152x152.png">
+    <meta property="og:title" content="新ドメインにしました" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://blog.p4ko.com/posts/domain" />
+    <meta property="og:image" content="https://blog.p4ko.com/assets/ogp.png" />
+    <meta property="og:site_name" content="blog.p4ko.com" />
+    <meta name="twitter:card" content="summary" />
+</head>
+
+<body>
+    <header>
+        <div class="section box">
+            <div class="header-inner inner grid is-center">
+                <a class="poszero-button grid is-center" href="/">
+                    <svg class="poszero" width="37" height="34" viewBox="0, 0, 37, 34"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="0,0 37,0 37,18 27,18 27,34 10,34 10,18 0,18" fill="#FFA9D4" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+        </div>
+    </header>
+    <section class="section article-title">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+            <div class="text text-title">新ドメインにしました</div>
+            <p>2021-01-17</p>
+            <div class="box is-flex is-baseline is-margin-bottom-xxl">
+                <a href="https://twitter.com/intent/tweet?text=新ドメインにしました%20%7C%20%40pishitaro_%0Ahttps%3A%2F%2Fblog.p4ko.com%2Fposts%2Fdomain%2F"
+                    target="_blank" rel="noopener"><i class="fa-brands fa-square-twitter fa-2xl"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section article">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+
+            <div class="wysiwyg">
+                <p><code>pishiko.github.io</code>から<code>p4ko.com</code>に変更しました！<br>p(ぴ)4（し）ko(こ).com ということで，大変覚えやすいですね．</p><h2 id="hc38653aed9"><br>Github Pages + カスタムドメイン + HTTPS</h2><p>github pages でホストしているサイトにカスタムドメインを割り当てる方法は以下に書いてありました．<br><a href="https://docs.github.com/en/github/working-with-github-pages/managing-a-custom-domain-for-your-github-pages-site" target="_blank" rel="noopener noreferrer">Managing a custom domain for your GitHub Pages site - GitHub Docs</a><br>それから，Hugo の場合は生成時に CNAME ファイルが消されてしまうので，<code>static/</code>以下に CNAME ファイルを置いておく必要があります．<br>CNAME ファイルは github が自動で生成してくれるので，pull した後<code>public/</code>直下にある CNAME ファイルを&nbsp;<code>static/</code>直下にコピーしておけばよいはずです．</p><h3 id="h6a5297362b"><br>追記</h3><p>カスタムドメインで https 化するにあたって，リポジトリの settings の Enforced Https のチェックを入れるだけでいいと思っていたんですが，A レコードを DNS に登録しても いつまでもチェックボックスを押せませんでした．<br>一度カスタムドメインを外して再設定したところ表示が変わったのですが，15 分どころか１時間くらいこんな感じでした．<br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/d10108a8fb2b47ff9a8cce52b417d71d/tls_bhwgwi.png" alt=""><br>で，以下を参考に，www の CNAME レコードを USERNAME.github.io に設定すると１日ほどでチェックできるようになっているといいな．（まだできてない）<br><a href="https://github.community/t/certificate-request-error-is-persistent-tls-certificate-cant-be-provisioned/11008/15" target="_blank" rel="noopener noreferrer">Certificate request error is persistent (TLS Certificate can’t be provisioned) - GitHub Help / GitHub Pages - GitHub Support Community</a></p><h3 id="h03005d91b0"><br>追記の追記</h3><p>8h ほどでできたよ！<br>おわり</p>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

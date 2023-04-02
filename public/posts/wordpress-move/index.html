@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>WordPress 引っ越し日記【bitnami⇨レンタルサーバ】</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.0/css/all.css">
+    <link rel="icon" type="image/png" href="/assets/favicons/icon-32x32.png" />
+    <link rel="apple-touch-icon" href="/assets/favicons/apple-touch-icon-152x152.png">
+    <meta property="og:title" content="WordPress 引っ越し日記【bitnami⇨レンタルサーバ】" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://blog.p4ko.com/posts/wordpress-move" />
+    <meta property="og:image" content="https://blog.p4ko.com/assets/ogp.png" />
+    <meta property="og:site_name" content="blog.p4ko.com" />
+    <meta name="twitter:card" content="summary" />
+</head>
+
+<body>
+    <header>
+        <div class="section box">
+            <div class="header-inner inner grid is-center">
+                <a class="poszero-button grid is-center" href="/">
+                    <svg class="poszero" width="37" height="34" viewBox="0, 0, 37, 34"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="0,0 37,0 37,18 27,18 27,34 10,34 10,18 0,18" fill="#FFA9D4" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+        </div>
+    </header>
+    <section class="section article-title">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+            <div class="text text-title">WordPress 引っ越し日記【bitnami⇨レンタルサーバ】</div>
+            <p>2021-03-31</p>
+            <div class="box is-flex is-baseline is-margin-bottom-xxl">
+                <a href="https://twitter.com/intent/tweet?text=WordPress 引っ越し日記【bitnami⇨レンタルサーバ】%20%7C%20%40pishitaro_%0Ahttps%3A%2F%2Fblog.p4ko.com%2Fposts%2Fwordpress-move%2F"
+                    target="_blank" rel="noopener"><i class="fa-brands fa-square-twitter fa-2xl"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section article">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+
+            <div class="wysiwyg">
+                <p>WordPress の引っ越し作業をしたのですが，思いのほかやることが多く詰まったので作業メモを残しておきます．<br><br>bitnami (on AWS) から XREA レンタルサーバ に引っ越しします． ついでにムームードメインで購入したドメインを AWS Route53 からレンタルサーバと一緒に使えるバリュードメイン DNS に引っ越しもします．<br><a href="https://www.xrea.com/" target="_blank" rel="noopener noreferrer">無料から使える高機能・高品質レンタルサーバー | XREA（エクスリア）</a></p><h2 id="h5b113af1f4"><br><br>リダイレクトの設定を切る</h2><p><code>/opt/bitnami/apps/wordpress/conf/htaccess.conf</code>&nbsp;の該当部を以下の様にコメントアウト</p><pre><code># BEGIN Custom
+#RewriteCond %{HTTP_HOST} !^www\.
+#RewriteRule ^(.*) $https://www.%{HTTP_HOST}/$1 [R=301,L]
+#END Custom</code></pre><h2 id="h348a095c5d"><br>Wordpress を丸々ダウンロードする</h2><p><code>/opt/bitnami/apps/wordpress/htdocs</code>の中身を丸々ダウンロードする．</p><h2 id="h5434a1e543"><br>MySQL のデータを引っ越し</h2><h3 id="he7f132431d">PHPMYADMIN から SQL をエクスポート</h3><p>localhost からしかログインできないので&nbsp;<code>/opt/bitnami/apps/phpmyadmin/conf/httpd-app.conf</code>を編集し，</p><pre><code>&lt;IfVersion &lt; 2.3 &gt;
+Order allow,deny
+Allow from 127.0.0.1
+Allow from &lt;YOURIP&gt;
+Satisfy all
+&lt;/IfVersion&gt;
+&lt;IfVersion &gt;= 2.3&gt;
+Require local
+Require ip &lt;YOURIP&gt;
+&lt;/IfVersion&gt;
+ErrorDocument 403 "For security reasons, this URL is only accessible using localhost (127.0.0.1) as the hostname."</code></pre><p>ホワイトリストに IP アドレスを追加<br>ID は<code>root</code>&nbsp;PASS は<code>/home/bitnami/bitnami_credentials</code>内のパスワード を用いてログイン．<br>そのあと GUI で bitnami_wordpress をエクスポート．<br>エクスポートの詳細設定で</p><ul><li>IF NOT EXISTS</li><li>挿入後にテーブルを空にする にチェックを入れる</li></ul><p>全体を通して<a href="https://www.premium-tsubu-hero.net/technology/it/tool/howtowordpress-dbbackup/" target="_blank" rel="noopener noreferrer">Wordpress(AWS+Bitnami)-データベースのデータを取り出す方法 – プログラマーやめました</a>が参考になる．</p><h3 id="h24f27480be"><br>MySQL データのインポート</h3><p><a href="https://www.xrea.com/support/manual/database/phpmyadmin/login/" target="_blank" rel="noopener noreferrer">phpMyAdmin へのログイン方法 | データベース | マニュアル | XREA（エクスリア）</a><br>でログインして，インポートする</p><h2 id="hfc8d15090b"><br>wordpress ファイルのコピー</h2><p>ルート直下に index.php が来るように置く．</p><h2 id="h87cbba7f22"><br>DNS 移転</h2><ul><li>ムームードメイン側で DNS サーバをバリュードメイン DNS に変更</li><li>バリュードメイン DNS に該当ドメインを登録し，レコードを以下の様に登録</li></ul><pre><code>a www &lt;IPADRESS&gt;
+alias @ www
+mx @ 10
+txt @ v=spf1 ip4:&lt;IPADRESS&gt; ~all</code></pre><p>www 有りを正規アドレスとし，なしは www に転送する．</p><h2 id="h48155708e4"><br>wp-config.php</h2><p>直下（<code>index.php</code>と同じ場所）の<code>wp-config.php</code><br>bitnami の設定だと動かないものがいくつかあったので変更．</p><pre><code>// ** MySQL settings - You can get this info from your web host ** //
+/** The name of the database for WordPress */
+define( 'DB_NAME', '新しいDB名（管理画面から確認可能）' );
+
+/** MySQL database username */
+define( 'DB_USER', '新しいDB名（上と一緒）' );
+
+/** MySQL database password */
+define( 'DB_PASSWORD', '新しいDBパスワード（管理画面から確認可能）' );
+
+/** MySQL hostname */
+define( 'DB_HOST', 'localhost' );
+
+//直打ちに変更
+define('WP_SITEURL', 'https://www.hogehoge');
+define('WP_HOME', 'https://www.hogehoge');
+//一時ファイル置き場を変更しないとプラグイン更新時にエラーを吐く
+define('WP_TEMP_DIR', '/virtual/username/public_html/www.hogehoge/wp-content/temp');</code></pre><p><br><br>おわり</p>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

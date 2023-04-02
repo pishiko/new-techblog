@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Google Cloud Functionsで DiscordコマンドBotをサーバレスにする</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.0/css/all.css">
+    <link rel="icon" type="image/png" href="/assets/favicons/icon-32x32.png" />
+    <link rel="apple-touch-icon" href="/assets/favicons/apple-touch-icon-152x152.png">
+    <meta property="og:title" content="Google Cloud Functionsで DiscordコマンドBotをサーバレスにする" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://blog.p4ko.com/posts/slash-functions" />
+    <meta property="og:image" content="https://blog.p4ko.com/assets/ogp.png" />
+    <meta property="og:site_name" content="blog.p4ko.com" />
+    <meta name="twitter:card" content="summary" />
+</head>
+
+<body>
+    <header>
+        <div class="section box">
+            <div class="header-inner inner grid is-center">
+                <a class="poszero-button grid is-center" href="/">
+                    <svg class="poszero" width="37" height="34" viewBox="0, 0, 37, 34"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="0,0 37,0 37,18 27,18 27,34 10,34 10,18 0,18" fill="#FFA9D4" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+        </div>
+    </header>
+    <section class="section article-title">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+            <div class="text text-title">Google Cloud Functionsで DiscordコマンドBotをサーバレスにする</div>
+            <p>2022-11-09</p>
+            <div class="box is-flex is-baseline is-margin-bottom-xxl">
+                <a href="https://twitter.com/intent/tweet?text=Google Cloud Functionsで DiscordコマンドBotをサーバレスにする%20%7C%20%40pishitaro_%0Ahttps%3A%2F%2Fblog.p4ko.com%2Fposts%2Fslash-functions%2F"
+                    target="_blank" rel="noopener"><i class="fa-brands fa-square-twitter fa-2xl"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section article">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+
+            <div class="wysiwyg">
+                <h2 id="h8d027c8ed3">はじめに</h2><p>discord.py製のBotを運用していたのですが、Botを置いていたHerokuの無料枠が消えたため、Cloud Functionsに引っ越し、というかほぼ置き換えすることにしました。インターネット上に見当たらなかったのでそのメモです。<br>参考までに、Cloud Functionsの料金は200万リクエスト（≒コマンド呼び出し回数）まで無料です。</p><h2 id="hb3070130bc"><br><br>Firebaseに登録する</h2><p><a href="https://zenn.dev/tentel/books/a96e4a64d3a672911f25" target="_blank" rel="noopener noreferrer">【Firebase】Cloud Functions チュートリアル</a><br>こちらの冒頭無料部分を参考に環境構築を行います。(丸投げ)</p><h3 id="hb78da71755"><br>やることダイジェスト</h3><ul><li>Firebaseプロジェクトの作成</li><li>Firebaseのプランをアップグレード</li><li>Firebase CLIのインストール</li><li><code>$ firebase init</code></li><li>done!</li></ul><h2 id="hdf5b130015"><br><br>Discord Botを登録する</h2><p><a href="https://zenn.dev/drumath2237/articles/112fd0bfa7ea4f836195#application%E3%81%AE%E4%BD%9C%E6%88%90" target="_blank" rel="noopener noreferrer">https://zenn.dev/drumath2237/articles/112fd0bfa7ea4f836195#applicationの作成</a><br>こちらの記事の<strong>Discord Slash Commandを作成する</strong>～<strong>Slash Commandの登録</strong>までを進めます。（丸投げ）</p><h3 id="hb78da71755"><br>やることダイジェスト</h3><ul><li>Applicationの作成</li><li>Slash Commandの登録</li><li>done!</li></ul><h2 id="h59fef37191"><br><br>Functionの実装・デプロイ</h2><p><code>function/index.ts</code>が生成されていると思うのでこれを弄っていきます。<br>とりあえず&nbsp;<code>$ npm install discord-interactions</code>&nbsp;をします。</p><h3 id="hc12075fe49"><br>検証について</h3><p>Slash Commandのエンドポイントが不正でないか証明するために、いくつか検証プロセスが必要になります。わざと不正なリクエストが飛んできたりします。<br>具体的には</p><ul><li>ヘッダーの署名検証を行い、不正であれば401を返す</li></ul><p><a href="https://discord.com/developers/docs/interactions/receiving-and-responding#security-and-authorization" target="_blank" rel="noopener noreferrer">https://discord.com/developers/docs/interactions/receiving-and-responding#security-and-authorization</a></p><ul><li>Interactionのタイプが1の場合は、PONGを返却</li></ul><p><a href="https://discord.com/developers/docs/interactions/receiving-and-responding#receiving-an-interaction" target="_blank" rel="noopener noreferrer">https://discord.com/developers/docs/interactions/receiving-and-responding#receiving-an-interaction</a><br>それを踏まえたのが以下のコードになります。今回は、コマンドに関係なく、hi! 名前と応答するよう実装します。</p><pre><code>import * as functions from "firebase-functions";
+import {
+  verifyKey,
+  InteractionType,
+  InteractionResponseType,
+} from "discord-interactions";
+
+// Start writing Firebase Functions
+// https://firebase.google.com/docs/functions/typescript
+
+export const discordBot = functions.https.onRequest((request, response) =&gt; {
+  // 検証：不正な署名を弾く
+  const sig = request.headers["x-signature-ed25519"];
+  const time = request.headers["x-signature-timestamp"];
+  if (typeof sig !== "string" || typeof time !== "string") {
+    response.status(401).send("");
+    return;
+  }
+
+  const CLIENT_PUBLIC_KEY = process.env.CLIENT_PUBLIC_KEY ?? "";
+  const isValid = verifyKey(request.rawBody, sig, time, CLIENT_PUBLIC_KEY);
+  if (!isValid) {
+    response.status(401).send("");
+    return;
+  }
+
+  const interaction = request.body;
+  if (!interaction) return;
+  if (interaction.type === InteractionType.PING) {
+        // 検証：PINGが送信された場合はPONGを返す
+    response.send({
+      type: InteractionResponseType.PONG,
+    });
+    return;
+  } else {
+    // コマンド：挨拶する
+    response
+      .status(200)
+      .type("application/json")
+      .send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: `hi! ${interaction.member.user.username}`,
+        },
+      });
+  }
+});</code></pre><p>それから、Discord Applicationの<code>CLIENT_PUBLIC_KEY</code>を<code>.env</code>&nbsp;ファイルに置きます。<br>具体的には<code>functions/.env</code>を作成し、 Discord Developer Portalの アプリケーションの General Infomationの PUBLIC KEY を以下の様にコピペします。</p><pre><code>CLIENT_PUBLIC_KEY=0123456789abcdef0123456789abcdef</code></pre><h2 id="h3e57d2a9c4"><br><br>デプロイする</h2><p><code>$ firebase deploy</code>&nbsp;します。<br>その後、firebaseのプロジェクトページからデプロイされた関数の詳細を確認します。<br>リクエストURLを控え、<br>Discord Developer Portalの アプリケーションの General Infomationの INTERACTION ENDPOINT に先程のリクエストURLを記述します。<br>お疲れ様でした。適当なサーバーでコマンドを叩いて確認してみてください。</p><h2 id="hc4697466e4"><br><br>発展</h2><h3 id="hd6a0917692">実際にコマンドを実装する</h3><p><code>interaction.data.name</code>&nbsp;でコマンド名が取れます。コマンドの判別はidでも良いでしょう。</p><h3 id="hdb999d2fce"><br>デバッグしたい</h3><p>CloudFunctionsのデバッグについては以下が参考になります。<br><a href="https://qiita.com/seya/items/c37207cd65ec914692ba#%E3%83%87%E3%83%90%E3%83%83%E3%82%B0%E6%96%B9%E6%B3%951-%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%AB%E3%81%A7http%E3%83%99%E3%83%BC%E3%82%B9%E3%81%AE%E9%96%A2%E6%95%B0%E3%82%92%E5%AE%9F%E8%A1%8C%E3%81%99%E3%82%8B" target="_blank" rel="noopener noreferrer">https://qiita.com/seya/items/c37207cd65ec914692ba</a><br>DiscordBotの場合はローカルでリクエストを作るのが大変なので、<a href="https://discord.com/developers/docs/tutorials/hosting-on-cloudflare-workers#setting-up-ngrok" target="_blank" rel="noopener noreferrer">公式チュートリアルも推奨している</a>ngrokでどうにかするとよいでしょう。<br><br><br>おわり</p>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

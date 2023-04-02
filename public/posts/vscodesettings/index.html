@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>VSCodeの見た目を自分好みにする</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.0/css/all.css">
+    <link rel="icon" type="image/png" href="/assets/favicons/icon-32x32.png" />
+    <link rel="apple-touch-icon" href="/assets/favicons/apple-touch-icon-152x152.png">
+    <meta property="og:title" content="VSCodeの見た目を自分好みにする" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://blog.p4ko.com/posts/vscodesettings" />
+    <meta property="og:image" content="https://blog.p4ko.com/assets/ogp.png" />
+    <meta property="og:site_name" content="blog.p4ko.com" />
+    <meta name="twitter:card" content="summary" />
+</head>
+
+<body>
+    <header>
+        <div class="section box">
+            <div class="header-inner inner grid is-center">
+                <a class="poszero-button grid is-center" href="/">
+                    <svg class="poszero" width="37" height="34" viewBox="0, 0, 37, 34"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="0,0 37,0 37,18 27,18 27,34 10,34 10,18 0,18" fill="#FFA9D4" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+        </div>
+    </header>
+    <section class="section article-title">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+            <div class="text text-title">VSCodeの見た目を自分好みにする</div>
+            <p>2021-02-27</p>
+            <div class="box is-flex is-baseline is-margin-bottom-xxl">
+                <a href="https://twitter.com/intent/tweet?text=VSCodeの見た目を自分好みにする%20%7C%20%40pishitaro_%0Ahttps%3A%2F%2Fblog.p4ko.com%2Fposts%2Fvscodesettings%2F"
+                    target="_blank" rel="noopener"><i class="fa-brands fa-square-twitter fa-2xl"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section article">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+
+            <div class="wysiwyg">
+                <h2 id="h5568728015">VSCode の設定</h2><p><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/a3e08de4054741828d645be65c4b0530/vscodess_jrg5r0.png" alt=""><br>変えすぎて何が何だかよくわからなくなってきそうなので整理も兼ねて設定を並べていきたいと思います．</p><h3 id="hfa14ac7259"><br>テーマ</h3><p>Solarized Dark を使用しています．<br><a href="https://ethanschoonover.com/solarized/" target="_blank" rel="noopener noreferrer">Solarized</a></p><pre><code>"workbench.colorTheme": "Solarized Dark",</code></pre><h3 id="h125a58c73e"><br>フォント</h3><p>半角が Cancadia Code，全角日本語が Han Code になるように設定しています． Cancadia Code は Microsoft の作った WindowsTerminal のデフォルトフォントで，リガチャにも対応しています． 日本語は見やすさ重視です．<br><a href="https://github.com/microsoft/cascadia-code" target="_blank" rel="noopener noreferrer">microsoft/cascadia-code: This is a fun, new monospaced font that includes programming ligatures and is designed to enhance the modern look and feel of the Windows Terminal.</a><br><a href="https://github.com/adobe-fonts/source-han-code-jp" target="_blank" rel="noopener noreferrer">adobe-fonts/source-han-code-jp: Source Han Code JP | 源ノ角ゴシック Code</a></p><pre><code>"editor.fontFamily": "Cascadia Code, Han Code JP",</code></pre><p>リガチャ（合字）は個別に有効にする必要があります．</p><pre><code>"editor.fontLigatures": true,</code></pre><h3 id="h0fd1bb383a"><br>ターミナルの配色</h3><p><a href="https://github.com/sonph/onehalf" target="_blank" rel="noopener noreferrer">Onehalf</a>という配色を使ってます．<br>配色テーマを VSCode の settings.json 用に成形してくれてるサイトがあるのでとても便利です．<br><a href="https://glitchbone.github.io/vscode-base16-term/#/onedark" target="_blank" rel="noopener noreferrer">Base16 Terminal Colors for Visual Studio Code</a></p><pre><code>"workbench.colorCustomizations": {
+        "terminal.background": "#282C34",
+        "terminal.foreground": "#ABB2BF",
+        "terminalCursor.background": "#ABB2BF",
+        "terminalCursor.foreground": "#ABB2BF",
+        "terminal.ansiBlack": "#282C34",
+        "terminal.ansiBlue": "#61AFEF",
+        "terminal.ansiBrightBlack": "#545862",
+        "terminal.ansiBrightBlue": "#61AFEF",
+        "terminal.ansiBrightCyan": "#56B6C2",
+        "terminal.ansiBrightGreen": "#98C379",
+        "terminal.ansiBrightMagenta": "#C678DD",
+        "terminal.ansiBrightRed": "#E06C75",
+        "terminal.ansiBrightWhite": "#C8CCD4",
+        "terminal.ansiBrightYellow": "#E5C07B",
+        "terminal.ansiCyan": "#56B6C2",
+        "terminal.ansiGreen": "#98C379",
+        "terminal.ansiMagenta": "#C678DD",
+        "terminal.ansiRed": "#E06C75",
+        "terminal.ansiWhite": "#ABB2BF",
+        "terminal.ansiYellow": "#E5C07B"
+    },</code></pre><p><br><br>おわり</p>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

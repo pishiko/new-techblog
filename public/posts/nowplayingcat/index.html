@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>【Last.fm+Discord】Now Playing Cat取扱説明書</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.0/css/all.css">
+    <link rel="icon" type="image/png" href="/assets/favicons/icon-32x32.png" />
+    <link rel="apple-touch-icon" href="/assets/favicons/apple-touch-icon-152x152.png">
+    <meta property="og:title" content="【Last.fm+Discord】Now Playing Cat取扱説明書" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://blog.p4ko.com/posts/nowplayingcat" />
+    <meta property="og:image" content="https://blog.p4ko.com/assets/ogp.png" />
+    <meta property="og:site_name" content="blog.p4ko.com" />
+    <meta name="twitter:card" content="summary" />
+</head>
+
+<body>
+    <header>
+        <div class="section box">
+            <div class="header-inner inner grid is-center">
+                <a class="poszero-button grid is-center" href="/">
+                    <svg class="poszero" width="37" height="34" viewBox="0, 0, 37, 34"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="0,0 37,0 37,18 27,18 27,34 10,34 10,18 0,18" fill="#FFA9D4" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+        </div>
+    </header>
+    <section class="section article-title">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+            <div class="text text-title">【Last.fm+Discord】Now Playing Cat取扱説明書</div>
+            <p>2020-07-14</p>
+            <div class="box is-flex is-baseline is-margin-bottom-xxl">
+                <a href="https://twitter.com/intent/tweet?text=【Last.fm+Discord】Now Playing Cat取扱説明書%20%7C%20%40pishitaro_%0Ahttps%3A%2F%2Fblog.p4ko.com%2Fposts%2Fnowplayingcat%2F"
+                    target="_blank" rel="noopener"><i class="fa-brands fa-square-twitter fa-2xl"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section article">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+
+            <div class="wysiwyg">
+                <p><strong>(2020 9/9 追記: v1.2 でバグ修正をしました．記事一番下にアップデート方法を記載．)</strong></p><h2 id="h64cd95e15f"><br>NowPlayingCat</h2><p><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/46eacdd78622408da106c3470da7cc20/fmstatus.png" alt=""><br><a href="https://github.com/pishiko/discord-nowplaying" target="_blank" rel="noopener noreferrer">Github</a><br>Discord の NowPlaying 欄に，Last.fm を通して聴いている音楽を表示するツールです．<br>Last.fm がほとんどの音楽サービスに対応しているため，どんなサービスで音楽を聴いていても表示できます．<br>Windows にしか対応していません．</p><h2 id="h78cc847d9b"><br>Last.fm とは</h2><p>Last.fm は，聴いている音楽を記録し，自分の音楽傾向を知ったり，新たなジャンルを発見する音楽 SNS サービスです．<br>詳しくは<a href="https://note.com/makotia/n/n778d1509b96d" target="_blank" rel="noopener noreferrer">こちら</a></p><h2 id="h046afd68e1"><br>導入方法</h2><p>前提として，Last.fm に登録しているものとします．</p><ol><li><a href="https://www.last.fm/api/account/create" target="_blank" rel="noopener noreferrer">https://www.last.fm/api/account/create</a>で API キーを取得します． CallBackURL は空白でいいです．他は適当に入力してください．</li></ol><pre><code>![img](https://res.cloudinary.com/pishiko/image/upload/v1605807283/blog/lfmkey_im6rvt.jpg)</code></pre><ol><li>アプリケーションを<a href="https://github.com/pishiko/nowplayingcat/releases/download/v1.2/NowPlayingCat1.2.zip" target="_blank" rel="noopener noreferrer">ここ</a>からダウンロードして，解凍します．</li><li>初回起動時はエラーで設定画面が開くはずなので，先ほどメモった APIKey を入力します． Last.fm User Name には Last.fm のユーザーネームを入力します． お好みで他の設定を変更してください．</li></ol><pre><code>![img](https://res.cloudinary.com/pishiko/image/upload/v1605807388/blog/settings_ownmlv.jpg)</code></pre><ol><li>保存を押したら discord に NowPlayingCat が表示されているはずです．</li></ol><h2 id="ha739b3b8f6"><br>その他</h2><p>起動中はタスクバーに駐在するので，アイコンを右クリックすることで，アプリケーションを終了したり，設定画面を開いたりできます．</p><h2 id="h58bb184601"><br>v1.0 からの移行</h2><p>以前の設定ファイルが settings.ini にあるはずなので，そこに書いてある APIKey を v1.1 の設定画面でコピペしてください．<br>以下は v1.0 からの変更点です．</p><ul><li>音楽を聴いていない時は表示しないように変更(Sleeping Cat の削除)</li><li>設定画面を追加</li><li>起動時に実行の設定を追加</li><li>画像に Dancing Cat を追加</li><li>バグを修正</li></ul><h2 id="ha1181a8298"><br>v1.1 から v1.2 への移行</h2><p>ダウンロードして解凍した NowPlayingCat1.2 内，discordRPCTool.exe を，古いバージョンの exe ファイルがあった場所に上書きコピーしてください．<br>※コピーするときは一旦終了させてください<br><a href="https://github.com/pishiko/nowplayingcat/releases/download/v1.2/NowPlayingCat1.2.zip" target="_blank" rel="noopener noreferrer">v1.2 download</a><br><br>おわり</p>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

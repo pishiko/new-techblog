@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Hugoのthemeを上書きできない問題</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.0/css/all.css">
+    <link rel="icon" type="image/png" href="/assets/favicons/icon-32x32.png" />
+    <link rel="apple-touch-icon" href="/assets/favicons/apple-touch-icon-152x152.png">
+    <meta property="og:title" content="Hugoのthemeを上書きできない問題" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://blog.p4ko.com/posts/css-custom" />
+    <meta property="og:image" content="https://blog.p4ko.com/assets/ogp.png" />
+    <meta property="og:site_name" content="blog.p4ko.com" />
+    <meta name="twitter:card" content="summary" />
+</head>
+
+<body>
+    <header>
+        <div class="section box">
+            <div class="header-inner inner grid is-center">
+                <a class="poszero-button grid is-center" href="/">
+                    <svg class="poszero" width="37" height="34" viewBox="0, 0, 37, 34"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="0,0 37,0 37,18 27,18 27,34 10,34 10,18 0,18" fill="#FFA9D4" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+        </div>
+    </header>
+    <section class="section article-title">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+            <div class="text text-title">Hugoのthemeを上書きできない問題</div>
+            <p>2020-10-06</p>
+            <div class="box is-flex is-baseline is-margin-bottom-xxl">
+                <a href="https://twitter.com/intent/tweet?text=Hugoのthemeを上書きできない問題%20%7C%20%40pishitaro_%0Ahttps%3A%2F%2Fblog.p4ko.com%2Fposts%2Fcss-custom%2F"
+                    target="_blank" rel="noopener"><i class="fa-brands fa-square-twitter fa-2xl"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section article">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+
+            <div class="wysiwyg">
+                <p><code>hugo server</code>で確認しながらテーマの上書きを試みてるんだけど，全然上書きされない．<br>あれーと思って キャッシュを強制再読み込みする&nbsp;<code>--ignoreCache</code>&nbsp;を付けてサーバーを起動してみたら次のエラーが出た．<br></p><pre><code>&gt;hugo server --ignoreCache
+Building sites … ERROR 2020/10/06 14:44:37 Transformation failed: TOCSS: failed to transform "css/main.scss" (text/x-scss): this feature is not available in your current Hugo version, see
+https://goo.gl/YMrWcn for more information
+Built in 501 ms
+Error: Error building site: logged 1 error(s)</code></pre><p><br>で，公式のヘルプを読む．<br><a href="https://gohugo.io/troubleshooting/faq/#i-get-tocss--this-feature-is-not-available-in-your-current-hugo-version" target="_blank" rel="noopener noreferrer">Frequently Asked Questions | Hugo</a><br>要約すると，Hugo は 2 バージョンあって，通常版と extended 版がある．Sass(css の拡張言語)に対応してるのは extended 版だけだからそっちにしてね．です．ちなみに，extended 版は少し重いらしい．あんまり気にならなかったけど．<br>ということで<a href="https://github.com/gohugoio/hugo/releases" target="_blank" rel="noopener noreferrer">Releases · gohugoio/hugo</a>からダウンロードして，Path を通してあった場所を探して，Hugo.exe だけ入れ替える．<br><strong>はい！うまくいきました！</strong><br>にしても，オプション付けないとエラーが出てもキャッシュから生成しちゃうのどうなの？</p><h2 id="ha5ef12a375"><br><br>CSS のカスタマイズ</h2><p>例えば<code>/themes/assets/css/components/main.scss</code>を上書きしたいとしたら，ファイルを<code>/assets/css/main.scss</code>にコピーして書き換えればよい．Hugo が自動で置き換えてくれるので，元のテーマを汚染する心配がなくなる．このサイトの theme は m10c というのを使っていて，<code>themes/assets/css/_extra.scss</code>を上書きしろと書いてあるので，<code>/assets/css/_extra.scss</code>に上書きしたい要素を追加していく．<br>例えばこんな感じで書けば，h2 だけ上書きして下線を描画できる</p><pre><code>h2 {
+  border-bottom: solid 1px $light-color;
+  margin-top: 80px;
+  margin-bottom: 30px;
+}</code></pre><h2 id="hd15e12206f"><br><br>フォントもカスタマイズ</h2><p>Hugo の theme って日本のことはほとんど考えられていないので，フォントが微妙．なので，Noto Sans JP を導入する．<br><a href="https://fonts.google.com/specimen/Noto+Sans+JP" target="_blank" rel="noopener noreferrer">Noto Sans JP - Google Fonts</a>で，追加したいフォントを選んで，selected family から Embed，@import&nbsp;内の一文をコピーして，カスタム css 部分にコピペする．それから，body の font-family を上書きする．</p><pre><code>@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&amp;display=swap");
+
+body {
+  font-family: "Noto Sans JP", sans-serif;
+}</code></pre><h2 id="h02705e3cfa"><br><br>レスポンシブデザイン</h2><p>レスポンシブデザインっぽくしてみた． このテーマはモバイル向けではないので，なんとかスマホでも見るに堪えうるようにした． モバイル向けに footer を作ったんだけど，あまりきれいなコードではないので後で直す．</p><h2 id="h9be0c3393d"><br><br>おわりに</h2><p>なんとか読めるようなブログにはなったと思うので，次は画像の埋め込みや，twitter など外部埋め込みをよさげにしたい．<br>おわり</p>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

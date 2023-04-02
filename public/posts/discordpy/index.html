@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Discord Bot 開発あれこれ</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.0/css/all.css">
+    <link rel="icon" type="image/png" href="/assets/favicons/icon-32x32.png" />
+    <link rel="apple-touch-icon" href="/assets/favicons/apple-touch-icon-152x152.png">
+    <meta property="og:title" content="Discord Bot 開発あれこれ" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://blog.p4ko.com/posts/discordpy" />
+    <meta property="og:image" content="https://blog.p4ko.com/assets/ogp.png" />
+    <meta property="og:site_name" content="blog.p4ko.com" />
+    <meta name="twitter:card" content="summary" />
+</head>
+
+<body>
+    <header>
+        <div class="section box">
+            <div class="header-inner inner grid is-center">
+                <a class="poszero-button grid is-center" href="/">
+                    <svg class="poszero" width="37" height="34" viewBox="0, 0, 37, 34"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="0,0 37,0 37,18 27,18 27,34 10,34 10,18 0,18" fill="#FFA9D4" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+        </div>
+    </header>
+    <section class="section article-title">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+            <div class="text text-title">Discord Bot 開発あれこれ</div>
+            <p>2020-10-10</p>
+            <div class="box is-flex is-baseline is-margin-bottom-xxl">
+                <a href="https://twitter.com/intent/tweet?text=Discord Bot 開発あれこれ%20%7C%20%40pishitaro_%0Ahttps%3A%2F%2Fblog.p4ko.com%2Fposts%2Fdiscordpy%2F"
+                    target="_blank" rel="noopener"><i class="fa-brands fa-square-twitter fa-2xl"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section article">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+
+            <div class="wysiwyg">
+                <p>身内コミュニティ向け discord bot を複数人で開発しているので，有用そうなレシピを書いていきます．</p><h2 id="hed900658dc"><br><br>環境</h2><p>python の discordAPI ラッパーである discordpy 製 bot を github で管理し，heroku 上で動かしています．</p><ul><li><a href="https://discordpy.readthedocs.io/ja/latest/index.html" target="_blank" rel="noopener noreferrer">discord.py へようこそ。 — discord.py 1.5.0 ドキュメント</a></li><li><a href="https://qiita.com/0yan/items/cd7eb98e114dd812c498" target="_blank" rel="noopener noreferrer">【備忘録】GitHub 経由で Heroku にデプロイするまでの流れ - Qiita</a></li></ul><h2 id="h448aca6475"><br><br>heroku の設定</h2><h3 id="he7a28316b4"><br>基本</h3><ul><li><a href="https://qiita.com/1ntegrale9/items/9d570ef8175cf178468f#heroku%E3%81%AE%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97" target="_blank" rel="noopener noreferrer">デプロイに必要なファイルの設定 | Python で実用 Discord Bot(discordpy 解説) - Qiita</a></li></ul><h3 id="hd485d96b97"><br>時間を正しく扱うために</h3><ul><li><a href="https://qiita.com/ikemura23/items/52ab8a5d260c7ee4d42b" target="_blank" rel="noopener noreferrer">Heroku のタイムゾーンを日本に合わせる - Qiita</a></li></ul><h3 id="h5058f143d3"><br>Heroku の仕様</h3><ul><li>24 時間に 1 回再起動</li><li>ファイルは<code>/tmp/</code>以下でのみ書き込み可能．</li><li>再起動時にファイルなどはリポジトリの状態に初期化される</li></ul><h2 id="hede80c70ba"><br><br>Cog で機能を分けて開発</h2><p>Cog というのは，discordpy で提供されている，機能を分割するためのクラスです． メインの Bot に Cog を追加していく形になります．<br>最低限の要素だけで構成されたテンプレートです．</p><ul><li><a href="https://github.com/pishiko/discordpy-cog-template" target="_blank" rel="noopener noreferrer">pishiko/discordpy-cog-template: Cog template</a></li></ul><h3 id="h0d376e5d4e"><br>構成</h3><h4 id="h6380645d1e">run-bot.py</h4><p><code>bot.add_cog(cog)</code>で Cog を追加します</p><pre><code>bot = Bot(command_prefix=["!"])
+bot.add_cog(YourCog(bot))
+bot.run(TOKEN)</code></pre><h4 id="h3c8350af61"><br>your_cog.py</h4><p>Cog クラスを継承した YourCog クラスを定義します． コンストラクタ<code>__init__</code>に取り込まれる先の bot を与えて保持します． これにより YourCog 内でも bot にアクセスできます．例えば，bot 自身の User は，<code>self.bot.user</code>でアクセスできるわけです．</p><pre><code>class YourCog(commands.Cog):
+    def __init__(self,bot):
+        self.bot = bot</code></pre><h2 id="had4e738c49"><br><br>Help のカスタマイズ</h2><p><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/213a26618dcc4836ad2e2ce111ba54f0/help_eps7hl.png" alt=""><br>デフォルトのヘルプは英語だし見にくいので，おしゃれにしてあげたいです． commands.HelpCommand を継承したクラスのメソッドをオーバーライドして実装します． クラスは，Bot クラスのコンストラクタで指定します．<br>send_bot_help メソッドを上書きすれば，<code>!help</code>コマンドが呼ばれたときの動作を指定できます．今回は Embed を使ってリッチにしてみました．</p><pre><code>class Help(commands.HelpCommand):
+    def __init__(self):
+        super().__init__()
+
+    async def send_bot_help(self,mapping):
+        description = ""
+        for cog,commands in mapping.items():
+            if not cog or type(cog) == Core:
+                continue
+            for command in commands:
+                description += "`?{}` ： {}\n".format(command.name,command.description if command.description else cog.qualified_name)
+
+        embed=Embed(title="コマンド一覧", description=description, color=0xedff66)
+        await self.get_destination().send(embed=embed)
+
+bot = Bot(command_prefix=PREFIX,help_command=Help())
+bot.run(TOKEN)</code></pre><p>その他にも書き換えられる要素があるので，以下を参考にしてみてください．&nbsp;<a href="https://qiita.com/coolwind0202/items/2167339f6e5edf889318" target="_blank" rel="noopener noreferrer">Discord.py Bot Commands Framework の help コマンドについて - Qiita</a></p><h2 id="hc267647c89"><br><br>Reaction をボタンとして利用</h2><p><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/868db6d71ea14dbe8c06133374afb221/reaction_egbqht.gif" alt=""><br>例えば，〇と ✖ のリアクションが押されたメッセージを用意して，YES か NO を訪ねたいときに使います． タイムアウト時間も指定できます．押された絵文字が返されます．</p><pre><code>"""
+messageにリアクションをし，最初に押されたリアクションを返す．
+allow_userにのみ反応．
+"""
+async def wait_button(bot,message: Message,emoji_strs: List[str],allow_user=None,timeout=None) -&gt; Emoji:
+    for e in emoji_strs:
+        await message.add_reaction(e)
+
+    def check(react,user):
+        if allow_user:
+            is_author = user == allow_user
+        else:
+            is_author = True
+        return str(react.emoji) in emoji_strs\
+            and react.message.id == message.id\
+            and is_author
+    reaction, user = await bot.wait_for('reaction_add',check=check,timeout=timeout)
+    return reaction.emoji</code></pre><h2 id="h5c14480506"><br><br>文字入り画像を生成</h2><p>pillow(PIL の後継)で文字入れした画像を投稿します． 以下は最低限文字入れするならの記事です．&nbsp;<a href="https://qiita.com/ekzemplaro/items/cd79d6a0fb4ff0a0f883" target="_blank" rel="noopener noreferrer">pillow で図形に文字を挿入 - Qiita</a><br>文字数に合わせていい感じの大きさにしたり，縁取りなどの装飾や縦書き対応もしたんですが，長くなりそうなので後日別記事で書きます．</p><h2 id="h274dcbef23"><br><br>bot にユーザーとして発言させたい</h2><p><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/87dcb047ed6f4d8798bb741133f42776/owarida_dpwsae.gif" alt=""></p><h3 id="hbfffda0a6a">例</h3><ol><li>A さんが「おわりだ」と発言</li><li>Bot が検知</li><li>投稿が画像に変更される</li></ol><h3 id="hd7afff3e58"><br>アプローチ</h3><ol><li>特定のフレーズを検知</li><li>A さんの投稿を削除</li><li>A さんのアイコンと名前を取得</li><li>取得した情報で Webhook を送信</li></ol><pre><code>HOOK_NAME = "BOT_HOOK"
+
+async def on_message(msg):
+if msg.content == "おわりだ":
+    hooks = await msg.channel.webhooks()
+    bot_hook = next(filter(lambda h:h.name==HOOK_NAME,hooks),None)
+    if not bot_hook:
+        bot_hook = await channel.create_webhook(name=HOOK_NAME)
+
+    await  msg.delete()
+
+    await  bot_hook.send(
+    username=msg.author.display_name,
+    avatar_url=msg.author.avatar_url,
+    file=img)</code></pre><h2 id="ha85244089d"><br><br>おわりだ</h2><p>適宜追加していく予定です．<br>おわり</p>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

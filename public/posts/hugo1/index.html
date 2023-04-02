@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>このブログをHugoで作った</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.0/css/all.css">
+    <link rel="icon" type="image/png" href="/assets/favicons/icon-32x32.png" />
+    <link rel="apple-touch-icon" href="/assets/favicons/apple-touch-icon-152x152.png">
+    <meta property="og:title" content="このブログをHugoで作った" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://blog.p4ko.com/posts/hugo1" />
+    <meta property="og:image" content="https://blog.p4ko.com/assets/ogp.png" />
+    <meta property="og:site_name" content="blog.p4ko.com" />
+    <meta name="twitter:card" content="summary" />
+</head>
+
+<body>
+    <header>
+        <div class="section box">
+            <div class="header-inner inner grid is-center">
+                <a class="poszero-button grid is-center" href="/">
+                    <svg class="poszero" width="37" height="34" viewBox="0, 0, 37, 34"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="0,0 37,0 37,18 27,18 27,34 10,34 10,18 0,18" fill="#FFA9D4" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+        </div>
+    </header>
+    <section class="section article-title">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+            <div class="text text-title">このブログをHugoで作った</div>
+            <p>2020-02-02</p>
+            <div class="box is-flex is-baseline is-margin-bottom-xxl">
+                <a href="https://twitter.com/intent/tweet?text=このブログをHugoで作った%20%7C%20%40pishitaro_%0Ahttps%3A%2F%2Fblog.p4ko.com%2Fposts%2Fhugo1%2F"
+                    target="_blank" rel="noopener"><i class="fa-brands fa-square-twitter fa-2xl"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section article">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+
+            <div class="wysiwyg">
+                <h2 id="hb8ae384f33">Hugo ＋ GitHub Pages</h2><p>このブログは Hugo + github pages で公開しています．テンプレートのカスタムをしてると意外と情報が無かったです．ということで，Hugo のインストールからブログの更新まで簡単にメモしたいと思います．</p><h2 id="h5aceb601f9"><br><br>そもそもなにそれ</h2><p>Hugo は静的ブログジェネレータというやつです．テンプレートと markdown の記事を用意すれば<code>hugo</code>で index.html なんかを生成してくれます．Go 製です．早いです．<br>github pages はリポジトリに置いておいた静的ファイルをホストしてくれるサービスです．</p><h2 id="hb7c8c640fe"><br><br>Hugo のインストール</h2><p>Windows10 の場合です．&nbsp;<a href="https://github.com/gohugoio/hugo/releases" target="_blank" rel="noopener noreferrer">https://github.com/gohugoio/hugo/releases</a>から最新リリースをダウンロードしてパスを通します．<code>Hugo\bin</code>なんかに<code>Hugo.exe</code>を移して PATH を通します．<br>そういえばこのとき PATH の上限 2000 文字くらいを超えてて GUI だとうまくいかないというのに出会った．とりあえずユーザ環境変数にしておいた．</p><h2 id="h141eb05b4f"><br><br>Hugo のテーマ適用</h2><pre><code>hugo new site myblog</code></pre><p>これでわーっと一式生成してくれます．<br>その後，<a href="https://themes.gohugo.io/" target="_blank" rel="noopener noreferrer">https://themes.gohugo.io/</a>で適当なテーマをダウンロードし，<code>\themes\</code>直下に適当な名前（テーマ名とか）にリネームしてディレクトリごとコピーします．<br><code>\config.toml</code>に設定を色々書いていきます．と言っても基本はコピペです．絶対に変えるのは</p><pre><code>baseURL = "例 https://pishiko.github.io"
+theme = "さっきリネームしたテンプレート名"</code></pre><p>で，あとは（テンプレートによると思いますが，）<code>\themes\適当なテンプレート名\exampleSite\config.toml</code>にテンプレート固有の設定があったのでコピペして適宜変更しました．</p><h2 id="ha4fc35cb4c"><br><br>Hugo でブログ生成</h2><pre><code>hugo new content\posts\test.md</code></pre><p>するとひな形が生成されます． ひな形はこんな感じにすれば OK</p><pre><code>---
+
+title: "Hello, world!"
+
+date: 2020-02-01T23:08:52+09:00
+
+draft: false
+
+tags: ["memo"]
+
+---</code></pre><p>注意すべきは<code>draft</code>で，<code>true</code>だと<strong>非公開状態（＝ debug モード）のみ公開</strong>なので false にしないとデプロイしても反映されなくて泣く．<br>あとは適当に Markdown で記事を書く．<br>ここまで上手くいっていれば， hugo server -D で debug モードでサーバを起動できるので，<code>localhost:1313</code>でブログを確認できます．手直ししても更新検知して再起動してくれるので便利です．</p><h2 id="h0f2951fea4"><br><br>公開まで</h2><pre><code>hugo</code></pre><p>これで<code>\public</code>に index.html ファイル一式が生成されます．これを公開しましょう．<br>まずは github で新規リポジトリを作成．その時のリポジトリ名は<code>GITHUBのUSERNAME.github.io</code>にします．あとは</p><pre><code>cd public
+git init
+git remote add origin git@github.com:/HOGEHOGE.git
+git add -A
+git commit -m init
+git push origin master</code></pre><p>で数秒で反映されます．</p><h2 id="h50d88a40a5"><br><br>その他詰まったとことかメモ</h2><ul><li>github のリポジトリ名を間違えてて後から pishiko.github.io に変更してもうまく機能してくれなかった．</li><li>画像とかは static ディレクトリにぶちこむ</li><li>テンプレートはそのまま弄っちゃだめ</li><li><a href="https://realfavicongenerator.net/" target="_blank" rel="noopener noreferrer">https://realfavicongenerator.net/</a>でファビコンレスポンシブ対応</li></ul><p>これくらいですかね．テンプレートのカスタマイズは少し癖があるのですが，長くなったのでまた書きたいと思います．それ以外はシンプルで楽しいです．</p>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>
