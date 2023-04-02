@@ -1,0 +1,62 @@
+$option-theme-default: "dark";
+$section-inner-width-wide: 800px;
+$section-inner-width-desktop: 800px;
+
+@import "../../node_modules/musubii/src/scss/configs/_import.scss";
+@import "../../node_modules/musubii/src/scss/styles/_import.scss";
+
+.text-title {
+    font-family: Nunito, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans Japanese", Meiryo, "Yu Gothic Medium", sans-serif;
+    font-weight: 700;
+    color: $theme-dark-dark-1;
+    line-height: 1.1;
+    font-size: 3em;
+    @include mobile-only() {
+        font-size: 10vw;
+    }
+}
+.poszero-button {
+    padding-left: 10px;
+    padding-right: 10px;
+    
+    .poszero {
+        margin: auto;
+        @include mobile-only() {
+            height: 20px;
+            width: auto;
+        }
+}
+}
+
+header {
+    // background-color: #ffffff20;
+    .header-inner {
+        height: 80px;
+    }
+    @include mobile-only() {
+        position: sticky;
+        top: 0;
+        .header-inner {
+            height: 40px;
+        }
+    }
+}
+
+.article-title{
+    margin-bottom: 100px;
+}
+.article {
+    margin-bottom: 100px;
+}
+
+.article-card {
+    min-height: 100px;
+    h1 {
+        color: $theme-dark-dark-1;
+        font-weight: 500;
+        font-size: 1.5em;
+        @include mobile-only() {
+                font-size: 6vw;
+            }
+    }
+}

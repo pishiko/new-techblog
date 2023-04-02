@@ -1,0 +1,16 @@
+{
+  "name": "html",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "sass ./src/scss:./dist/assets/css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "musubii": "^7.2.0",
+    "sass": "^1.60.0"
+  }
+}
