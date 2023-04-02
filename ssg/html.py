@@ -5,7 +5,7 @@ import shutil
 
 env = Environment(loader=FileSystemLoader('./template',encoding='utf-8'))
 
-def create_article(article:Article,template_path='index.html',dist_path='../public/posts'):
+def create_article(article:Article,template_path='index.html',dist_path='../docs/posts'):
     tmpl = env.get_template(template_path)
     html = tmpl.render(article=article)
     
@@ -15,7 +15,7 @@ def create_article(article:Article,template_path='index.html',dist_path='../publ
         f.write(html)
     return
 
-def create_top(articles:list[Article],template_path='top.html',dist_path='../public'):
+def create_top(articles:list[Article],template_path='top.html',dist_path='../docs'):
     tmpl = env.get_template(template_path)
     html = tmpl.render(articles=articles)
     
@@ -29,9 +29,9 @@ if __name__ == '__main__':
     from client import get_articles
     articles = get_articles()
     if articles:
-        shutil.rmtree('../public')
-        os.makedirs('../public/posts')
-        shutil.copytree('../html/dist/assets','../public/assets')
+        shutil.rmtree('../docs')
+        os.makedirs('../docs/posts')
+        shutil.copytree('../html/dist/assets','../docs/assets')
 
         for article in articles:
             create_article(article)
