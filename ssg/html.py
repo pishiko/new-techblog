@@ -32,6 +32,7 @@ if __name__ == '__main__':
         shutil.rmtree('../docs')
         os.makedirs('../docs/posts')
         shutil.copytree('../html/dist/assets','../docs/assets')
+        shutil.copytree('../html/static','../docs',dirs_exist_ok=True)
 
         for article in articles:
             create_article(article)
