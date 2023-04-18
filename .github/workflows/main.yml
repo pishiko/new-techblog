@@ -22,9 +22,7 @@ jobs:
         run: |
           cd ./ssg
           python -m pip install --upgrade pip
-          python -m pip install pipenv
-          pipenv lock -r > requirements.txt
-          python -m pip install -r requirements.txt
+          python -m pip install requests jinja2 python-dotenv
       
       - name: Build
         run: |
