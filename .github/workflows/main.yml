@@ -26,6 +26,7 @@ jobs:
       
       - name: Build
         run: |
+          cd ./ssg
           python ./html.py
       
       - name: Push docs
