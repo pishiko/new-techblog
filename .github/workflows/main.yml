@@ -1,6 +1,7 @@
 name: Deploy pages
 
 on:
+  workflow_dispatch:
   repository_dispatch:
     types: [update_content]
 
