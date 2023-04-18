@@ -20,10 +20,11 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip pipenv
+          cd ./ssg
+          pipenv install
       
       - name: Build
         run: |
-          cd ./ssg
           pipenv run python ./html.py
       
       - name: Push docs
