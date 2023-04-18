@@ -19,9 +19,10 @@ jobs:
       
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip pipenv
           cd ./ssg
-          pipenv install
+          python -m pip install --upgrade pip pipenv
+          pipenv lock
+          run: pipenv sync --dev
       
       - name: Build
         run: |
