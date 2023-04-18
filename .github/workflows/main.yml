@@ -25,6 +25,9 @@ jobs:
           python -m pip install requests jinja2 python-dotenv
       
       - name: Build
+        env:
+          API_BASE_URI: ${{ secrets.API_BASE_URI }}
+          MICROCMS_TOKEN: ${{ secrets.MICROCMS_TOKEN }}
         run: |
           cd ./ssg
           python ./html.py
