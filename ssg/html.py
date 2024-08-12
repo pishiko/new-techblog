@@ -32,12 +32,14 @@ if __name__ == '__main__':
     args = sys.argv[1:]
     mock = '--mock' in args or '-m' in args# モック生成フラグ
 
+    out_dir = '../docs' if not mock else '../.preview'
+
     articles = get_articles(mock=mock)
     if articles:
-        shutil.rmtree('../docs')
-        os.makedirs('../docs/posts')
-        shutil.copytree('../html/dist/assets','../docs/assets')
-        shutil.copytree('../html/static','../docs',dirs_exist_ok=True)
+        shutil.rmtree(out_dir,ignore_errors=True)
+        os.makedirs(out_dir+'/posts')
+        shutil.copytree('../html/dist/assets',out_dir+'/assets')
+        shutil.copytree('../html/static',out_dir,dirs_exist_ok=True)
 
         for article in articles:
             create_article(article)
