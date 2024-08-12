@@ -2,6 +2,7 @@ from client import Article
 from jinja2 import Environment, FileSystemLoader
 import os
 import shutil
+import sys
 
 env = Environment(loader=FileSystemLoader('./template',encoding='utf-8'))
 
@@ -27,7 +28,11 @@ def create_top(articles:list[Article],template_path='top.html',dist_path='../doc
 
 if __name__ == '__main__':
     from client import get_articles
-    articles = get_articles()
+
+    args = sys.argv[1:]
+    mock = '--mock' in args or '-m' in args# モック生成フラグ
+
+    articles = get_articles(mock=mock)
     if articles:
         shutil.rmtree('../docs')
         os.makedirs('../docs/posts')
