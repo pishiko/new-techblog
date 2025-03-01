@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>DICEOMANCERを日本語化する（あるいはBundleAssetの解析）</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.0/css/all.css">
+    <link rel="icon" type="image/png" href="/assets/favicons/icon-32x32.png" />
+    <link rel="apple-touch-icon" href="/assets/favicons/apple-touch-icon-152x152.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/atom-one-dark.min.css">
+    <meta property="og:title" content="DICEOMANCERを日本語化する（あるいはBundleAssetの解析）" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://blog.p4ko.com/posts/dicemancer-translate" />
+    <meta property="og:image" content="https://blog.p4ko.com/assets/ogp.png" />
+    <meta property="og:site_name" content="blog.p4ko.com" />
+    <meta name="twitter:card" content="summary" />
+</head>
+
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <header>
+        <div class="section box">
+            <div class="header-inner inner grid is-center">
+                <a class="poszero-button grid is-center" href="/">
+                    <svg class="poszero" width="37" height="34" viewBox="0, 0, 37, 34"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="0,0 37,0 37,18 27,18 27,34 10,34 10,18 0,18" fill="#FFA9D4" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+        </div>
+    </header>
+    <section class="section article-title">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+            <div class="text text-title">DICEOMANCERを日本語化する（あるいはBundleAssetの解析）</div>
+            <p>2025-03-01</p>
+            <div class="box is-flex is-baseline is-margin-bottom-xxl">
+                <a href="https://twitter.com/intent/tweet?text=DICEOMANCERを日本語化する（あるいはBundleAssetの解析）%20%7C%20%40pishitaro_%0Ahttps%3A%2F%2Fblog.p4ko.com%2Fposts%2Fdicemancer-translate%2F"
+                    target="_blank" rel="noopener"><i class="fa-brands fa-square-twitter fa-2xl"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section article">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+
+            <div class="wysiwyg">
+                <p><br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/6bcdbee2c14c46d8bc005a1dd6d87111/image.png" alt=""><br><br>Steamで発売されている<a style="background-color:#ffffff" href="https://store.steampowered.com/app/2501600/DICEOMANCER/?l=japanese" target="_blank" rel="noopener noreferrer">DICEOMANCER</a>というStSフォロワーのゲームが中々に面白い。<br><br>が、残念なことにこのゲーム、日本語に対応していない。<br><br>最初は英語を読みながら頑張っていたが、ゲームの特性上かなり気合を入れて読む必要があり、流石に辛くなってきたので日本語化を試みることにした。<br></p><h2 id="ha41fc1895d">翻訳データをどうするか</h2><p><br>最初はChatGPTで翻訳でもしようかと思っていたが、公式discordを見てみるとどうやらCrowdinには既に日本語の翻訳データは存在しているらしい。（あるなら反映してくれてもいいじゃんね...）<br><br><a href="https://crowdin.com/project/diceomancer/ja" target="_blank" rel="noopener noreferrer">https://crowdin.com/project/diceomancer/ja</a><br><br>となれば後は言語ファイルを置き換えるだけなので問題は無さそうだ。<br><br>Export In XLIFFから一つのファイルでダウンロードすることが出来る。<br><br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/67bb788105914d0390df7e69ebe894f7/image.png" alt=""><br></p><h2 id="h12149789f5">翻訳のアセットを探す</h2><p><code>SteamLibrary\steamapps\common\DICEOMANCER\Diceomancer_Data\StreamingAssets\aa\StandaloneWindows64</code> あたりを覗いていると、翻訳ファイルっぽいものが見つかる。<br><br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/fa49b4082e4c46c49dd18cd5f6b28775/image.png" alt=""><br><br>調べてみると、UnityのAssetBundleというものらしく、どうやらUABEというツールで抽出可能らしい。<br><br><a href="https://github.com/nesrak1/UABEA" target="_blank" rel="noopener noreferrer">https://github.com/nesrak1/UABEA</a><br><br>これを使って、試しに中国語のファイルをdumpしてみるとこんな感じ。</p><pre><code>0 MonoBehaviour Base
+&nbsp;0 PPtr&lt;GameObject&gt; m_GameObject
+&nbsp; 0 int m_FileID = 0
+&nbsp; 0 SInt64 m_PathID = 0
+&nbsp;1 UInt8 m_Enabled = 1
+&nbsp;0 PPtr&lt;MonoScript&gt; m_Script
+&nbsp; 0 int m_FileID = 0
+&nbsp; 0 SInt64 m_PathID = -2378050947708348859
+&nbsp;1 string m_Name = "Ability_zh-Hans"
+&nbsp;0 LocaleIdentifier m_LocaleId
+&nbsp; 1 string m_Code = "zh-Hans"
+&nbsp;0 PPtr&lt;$SharedTableData&gt; m_SharedData
+&nbsp; 0 int m_FileID = 1
+&nbsp; 0 SInt64 m_PathID = -6453478249562131148
+&nbsp;0 MetadataCollection m_Metadata
+&nbsp; 0 IMetadata m_Items
+&nbsp; &nbsp;0 Array Array (0 items)
+&nbsp; &nbsp; 0 int size = 0
+&nbsp;0 TableEntryData m_TableData
+&nbsp; 0 Array Array (159 items)
+&nbsp; &nbsp;0 int size = 159
+&nbsp; &nbsp;[0]
+&nbsp; &nbsp; 0 TableEntryData data
+&nbsp; &nbsp; &nbsp;0 SInt64 m_Id = 4318285824
+&nbsp; &nbsp; &nbsp;1 string m_Localized = "燃烧"
+&nbsp; &nbsp; &nbsp;0 MetadataCollection m_Metadata
+&nbsp; &nbsp; &nbsp; 0 IMetadata m_Items
+&nbsp; &nbsp; &nbsp; &nbsp;0 Array Array (0 items)
+&nbsp; &nbsp; &nbsp; &nbsp; 0 int size = 0</code></pre><p><br>これを置き換えていけば行けそうだ。<br></p><h2 id="h20d9cc4557">ハッシュチェック</h2><p><br>で、適当に一個置き換えてみたが、<br><br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/727acc659d5e436897e0f55cd3c0d0a2/image.png" alt=""><br><br>だめやんけ<br><br>ツールややり方がおかしいのかと思って、他のツールを試したりバイナリを比較したりしてみたがどうもだめなので、これは何か整合性のチェックをしているなという感じ。<br><br>っていうか、ファイル名を見るとなんか末尾ハッシュっぽくね？<br><br><code>Ability_zh-Hans-CAB-94da1c08ce5122fffd4ef4f65ff0dbbb-1042738465642658668.txt</code>  <br><br>というわけでググるとやっぱりハッシュチェックをしているらしい。が、catalog.jsonの設定を変えればチェックを無効にできるっぽい。<br><br><a href="https://note.com/bliz21/n/n3236d5d780b7" target="_blank" rel="noopener noreferrer">HashチェックのあるAssets\.Bundleの改造の仕方｜Bliz</a><br><br>できました。<br></p><h2 id="hafce13b89f">やるだけ</h2><p><br>というわけであとはやるだけなので、<code>diceomancer_ja.xliff</code> を基に<code>localization-string-tables-chinese(simplified)(zh-hans)_assets_all.bundle</code><br>から抽出したこいつらの中身を置換していけばよい。<br><br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/683bbf3c6b364ffb9623de9abf641a9b/image.png" alt=""><br></p><pre><code>import os
+import re
+import sys
+import xml.etree.ElementTree as ET
+
+
+
+def build_localization_map(xliff_path):
+&nbsp; &nbsp; print(f"[INFO] Loading XLIFF file: {xliff_path}")
+&nbsp; &nbsp; ns = {'x': 'urn:oasis:names:tc:xliff:document:1.2'}
+&nbsp; &nbsp; localization_map = {}
+&nbsp; &nbsp; try:
+&nbsp; &nbsp; &nbsp; &nbsp; tree = ET.parse(xliff_path)
+&nbsp; &nbsp; except Exception as e:
+&nbsp; &nbsp; &nbsp; &nbsp; print(f"[ERROR] Failed to parse XLIFF file: {e}")
+&nbsp; &nbsp; &nbsp; &nbsp; return localization_map
+&nbsp; &nbsp; root = tree.getroot()
+
+
+&nbsp; &nbsp; trans_units = root.findall('.//x:trans-unit', ns)
+&nbsp; &nbsp; print(
+&nbsp; &nbsp; &nbsp; &nbsp; f"[INFO] Found {len(trans_units)} trans-unit elements in the XLIFF file.")
+
+
+&nbsp; &nbsp; for trans_unit in trans_units:
+&nbsp; &nbsp; &nbsp; &nbsp; resname = trans_unit.get("resname")
+&nbsp; &nbsp; &nbsp; &nbsp; if resname is None:
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; print("[WARN] Skipping a trans-unit without resname attribute.")
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; continue
+&nbsp; &nbsp; &nbsp; &nbsp; try:
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; key = int(resname)
+&nbsp; &nbsp; &nbsp; &nbsp; except ValueError:
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; print(f"[WARN] Invalid resname value (not an integer): {resname}")
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; continue
+&nbsp; &nbsp; &nbsp; &nbsp; target_elem = trans_unit.find('x:target', ns)
+&nbsp; &nbsp; &nbsp; &nbsp; value = ""
+&nbsp; &nbsp; &nbsp; &nbsp; if target_elem is not None and target_elem.text is not None:
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; value = target_elem.text
+&nbsp; &nbsp; &nbsp; &nbsp; # XLIFF内の改行はすべて文字列 "\n" に置換して1行にする
+&nbsp; &nbsp; &nbsp; &nbsp; value = value.replace('\r\n', '\\n').replace(
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; '\r', '\\n').replace('\n', '\\n')
+&nbsp; &nbsp; &nbsp; &nbsp; if value == "":
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; value = "&lt;EMPTY&gt;"
+&nbsp; &nbsp; &nbsp; &nbsp; localization_map[key] = value
+&nbsp; &nbsp; &nbsp; &nbsp; print(f"[DEBUG] Mapping: {key} -&gt; {value}")
+&nbsp; &nbsp; return localization_map
+
+
+
+def update_txt_file(txt_input_path, localization_map):
+&nbsp; &nbsp; print(f"[INFO] Processing txt file: {txt_input_path}")
+&nbsp; &nbsp; try:
+&nbsp; &nbsp; &nbsp; &nbsp; with open(txt_input_path, "r", encoding="utf-8") as f:
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; content = f.read()
+&nbsp; &nbsp; except Exception as e:
+&nbsp; &nbsp; &nbsp; &nbsp; print(f"[ERROR] Failed to read {txt_input_path}: {e}")
+&nbsp; &nbsp; &nbsp; &nbsp; return None
+
+
+&nbsp; &nbsp; # txtファイルは必ず1行である前提
+&nbsp; &nbsp; # パターンは、m_Id ～ m_Localized のブロック全体をキャプチャする。
+&nbsp; &nbsp; # ・group(1): m_Localized の前半部分（m_Id～m_Localized = "）
+&nbsp; &nbsp; # ・group(2): m_Idの値（数字）
+&nbsp; &nbsp; # ・group(3): m_Localized の値（非貪欲、次の "（直後に空白+数字または行末がある）まで）
+&nbsp; &nbsp; # lookahead (?:"(?=\s+\d|$)) により、閉じの " はマッチ対象外とする
+&nbsp; &nbsp; pattern = re.compile(
+&nbsp; &nbsp; &nbsp; &nbsp; r'(m_Id\s*=\s*([-]?\d+).*?m_Localized\s*=\s*")(.*?)("(?=\s+\d|$))',
+&nbsp; &nbsp; &nbsp; &nbsp; re.DOTALL
+&nbsp; &nbsp; )
+
+
+&nbsp; &nbsp; def replacer(match):
+&nbsp; &nbsp; &nbsp; &nbsp; id_str = match.group(2)
+&nbsp; &nbsp; &nbsp; &nbsp; try:
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; id_val = int(id_str)
+&nbsp; &nbsp; &nbsp; &nbsp; except ValueError:
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; print(f"[WARN] Invalid m_Id value found: {id_str}")
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return match.group(0)
+&nbsp; &nbsp; &nbsp; &nbsp; old_val = match.group(3)
+&nbsp; &nbsp; &nbsp; &nbsp; if id_val in localization_map:
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; new_val = localization_map[id_val]
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; print(f"[DEBUG] Replacing m_Localized for m_Id {id_val}:")
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; print(f" &nbsp; &nbsp; &nbsp; &nbsp;OLD: {old_val}")
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; print(f" &nbsp; &nbsp; &nbsp; &nbsp;NEW: {new_val}")
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return match.group(1) + new_val + '"'
+&nbsp; &nbsp; &nbsp; &nbsp; else:
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; print(
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; f"[DEBUG] m_Id {id_val} not found in localization map. No replacement.")
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return match.group(0)
+
+
+&nbsp; &nbsp; new_content = pattern.sub(replacer, content)
+&nbsp; &nbsp; return new_content
+
+
+
+def main(xliff_path, txt_input_dir, txt_output_dir):
+&nbsp; &nbsp; print(f"[INFO] Starting processing with XLIFF file: {xliff_path}")
+&nbsp; &nbsp; if not os.path.exists(txt_output_dir):
+&nbsp; &nbsp; &nbsp; &nbsp; try:
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; os.makedirs(txt_output_dir)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; print(f"[INFO] Created output directory: {txt_output_dir}")
+&nbsp; &nbsp; &nbsp; &nbsp; except Exception as e:
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; print(f"[ERROR] Could not create output directory: {e}")
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return
+
+
+&nbsp; &nbsp; localization_map = build_localization_map(xliff_path)
+&nbsp; &nbsp; if not localization_map:
+&nbsp; &nbsp; &nbsp; &nbsp; print("[ERROR] Localization map is empty. Exiting.")
+&nbsp; &nbsp; &nbsp; &nbsp; return
+
+
+&nbsp; &nbsp; txt_files = [f for f in os.listdir(
+&nbsp; &nbsp; &nbsp; &nbsp; txt_input_dir) if f.lower().endswith(".txt")]
+&nbsp; &nbsp; if not txt_files:
+&nbsp; &nbsp; &nbsp; &nbsp; print("[ERROR] No txt files found in the input directory.")
+&nbsp; &nbsp; &nbsp; &nbsp; return
+&nbsp; &nbsp; print(f"[INFO] Found {len(txt_files)} txt files to process.")
+
+
+&nbsp; &nbsp; for filename in txt_files:
+&nbsp; &nbsp; &nbsp; &nbsp; txt_input_path = os.path.join(txt_input_dir, filename)
+&nbsp; &nbsp; &nbsp; &nbsp; new_content = update_txt_file(txt_input_path, localization_map)
+&nbsp; &nbsp; &nbsp; &nbsp; if new_content is None:
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; print(f"[ERROR] Skipping file due to error: {filename}")
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; continue
+&nbsp; &nbsp; &nbsp; &nbsp; txt_output_path = os.path.join(txt_output_dir, filename)
+&nbsp; &nbsp; &nbsp; &nbsp; try:
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; with open(txt_output_path, "w", encoding="utf-8") as f:
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; f.write(new_content)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; print(f"[INFO] Updated file written: {txt_output_path}")
+&nbsp; &nbsp; &nbsp; &nbsp; except Exception as e:
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; print(
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; f"[ERROR] Failed to write output file {txt_output_path}: {e}")
+
+
+
+if __name__ == "__main__":
+&nbsp; &nbsp; if len(sys.argv) != 4:
+&nbsp; &nbsp; &nbsp; &nbsp; print("Usage: python script.py &lt;XLIFFファイルパス&gt; &lt;txt入力ディレクトリ&gt; &lt;txt出力ディレクトリ&gt;")
+&nbsp; &nbsp; &nbsp; &nbsp; sys.exit(1)
+
+
+&nbsp; &nbsp; xliff_path = sys.argv[1]
+&nbsp; &nbsp; txt_input_dir = sys.argv[2]
+&nbsp; &nbsp; txt_output_dir = sys.argv[3]
+&nbsp; &nbsp; main(xliff_path, txt_input_dir, txt_output_dir)
+
+</code></pre><p><br>置換出来たら、UABEAのExport Dumpして保存すれば、置換済みの<code>localization-string-tables-chinese(simplified)(zh-hans)</code><em><code>assets</code></em><code>all.bundle</code>が出来上がるのでこれを元の位置に置いてあげればよい。<br><br>というわけで無事日本語化に成功したのであった。<br><br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/9ea5c1335b0243a6bf9c00b167984d72/image.png" alt=""><br><br>中々面白い作業だった。めでたしめでたし。</p>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>
