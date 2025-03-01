@@ -78,7 +78,7 @@
 &nbsp; &nbsp; &nbsp;0 MetadataCollection m_Metadata
 &nbsp; &nbsp; &nbsp; 0 IMetadata m_Items
 &nbsp; &nbsp; &nbsp; &nbsp;0 Array Array (0 items)
-&nbsp; &nbsp; &nbsp; &nbsp; 0 int size = 0</code></pre><p><br>これを置き換えていけば行けそうだ。<br><br></p><h1 id="h20d9cc4557">ハッシュチェック</h1><p><br>で、適当に一個置き換えてみたが、<br><br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/727acc659d5e436897e0f55cd3c0d0a2/image.png" alt=""><br><br>だめやんけ<br><br>ツールややり方がおかしいのかと思って、他のツールを試したりバイナリを比較したりしてみたがどうもだめなので、これは何か整合性のチェックをしているなという感じ。<br><br>っていうか、ファイル名を見るとなんか末尾ハッシュっぽくね？<br><br><code>Ability_zh-Hans-CAB-94da1c08ce5122fffd4ef4f65ff0dbbb-1042738465642658668.txt</code>  <br><br>というわけでググるとやっぱりハッシュチェックをしているらしい。が、catalog.jsonの設定を変えればチェックを無効にできるっぽい。<br><br><a href="https://note.com/bliz21/n/n3236d5d780b7" target="_blank" rel="noopener noreferrer">HashチェックのあるAssets\.Bundleの改造の仕方｜Bliz</a><br><br>できました。<br><br></p><h1 id="hafce13b89f">やるだけ</h1><p><br>というわけであとはやるだけなので、<code>diceomancer_ja.xliff</code> を基に<code>localization-string-tables-chinese(simplified)(zh-hans)_assets_all.bundle</code><br>から抽出したこいつらの中身を置換していけばよい。<br><br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/683bbf3c6b364ffb9623de9abf641a9b/image.png" alt=""><br></p><pre><code>import os
+&nbsp; &nbsp; &nbsp; &nbsp; 0 int size = 0</code></pre><p><br>これを置き換えていけば行けそうだ。<br><br></p><h1 id="h20d9cc4557">ハッシュチェック</h1><p><br>で、適当に一個置き換えてみたが、<br><br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/727acc659d5e436897e0f55cd3c0d0a2/image.png" alt=""><br><br>だめやんけ<br><br>ツールややり方がおかしいのかと思って、他のツールを試したりバイナリを比較したりしてみたがどうもだめなので、これは何か整合性のチェックをしているなという感じ。<br><br>っていうか、ファイル名を見るとなんか末尾ハッシュっぽくね？<br><br><code>Ability_zh-Hans-CAB-94da1c08ce5122fffd4ef4f65ff0dbbb-1042738465642658668.txt</code>  <br><br>というわけでググるとやっぱりハッシュチェックをしているらしい。が、catalog.jsonの設定を変えればチェックを無効にできるっぽい。<br><br><a href="https://note.com/bliz21/n/n3236d5d780b7" target="_blank" rel="noopener noreferrer">HashチェックのあるAssets\.Bundleの改造の仕方｜Bliz</a><br><br>できました。<br><br></p><h1 id="hafce13b89f">やるだけ</h1><p><br>というわけであとは<code>diceomancer_ja.xliff</code> を基に<code>localization-string-tables-chinese(simplified)(zh-hans)_assets_all.bundle</code><br>から抽出したこいつらの中身を置換していけばよい。<br><br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/683bbf3c6b364ffb9623de9abf641a9b/image.png" alt=""><br><br>置換コード<br></p><pre><code>import os
 import re
 import sys
 import xml.etree.ElementTree as ET
@@ -227,7 +227,7 @@ if __name__ == "__main__":
 &nbsp; &nbsp; txt_output_dir = sys.argv[3]
 &nbsp; &nbsp; main(xliff_path, txt_input_dir, txt_output_dir)
 
-</code></pre><p><br>置換出来たら、UABEAのExport Dumpして保存すれば、置換済みの<code>localization-string-tables-chinese(simplified)(zh-hans)</code><em><code>assets</code></em><code>all.bundle</code>が出来上がるのでこれを元の位置に置いてあげればよい。<br><br>というわけで無事日本語化に成功したのであった。<br><br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/9ea5c1335b0243a6bf9c00b167984d72/image.png" alt=""><br><br>中々面白い作業だった。めでたしめでたし。</p>
+</code></pre><p><br>置換出来たら、UABEAのImport Dumpして保存すれば、置換済みの<code>localization-string-tables-chinese(simplified)(zh-hans)_assets_all.bundle</code>が出来上がるのでこれを元の位置に置いてあげればよい。<br><br>というわけで無事日本語化に成功したのであった。<br><br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/9ea5c1335b0243a6bf9c00b167984d72/image.png" alt=""><br><br>中々面白い作業だった。めでたしめでたし。</p>
             </div>
         </div>
     </section>
