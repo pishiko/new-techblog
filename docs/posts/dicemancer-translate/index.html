@@ -4,14 +4,14 @@
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>DICEOMANCERを日本語化する（あるいはBundleAssetの解析）</title>
+    <title>DICEOMANCERを日本語化する（あるいはAssetBundleの解析）</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.0/css/all.css">
     <link rel="icon" type="image/png" href="/assets/favicons/icon-32x32.png" />
     <link rel="apple-touch-icon" href="/assets/favicons/apple-touch-icon-152x152.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/atom-one-dark.min.css">
-    <meta property="og:title" content="DICEOMANCERを日本語化する（あるいはBundleAssetの解析）" />
+    <meta property="og:title" content="DICEOMANCERを日本語化する（あるいはAssetBundleの解析）" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://blog.p4ko.com/posts/dicemancer-translate" />
     <meta property="og:image" content="https://blog.p4ko.com/assets/ogp.png" />
@@ -37,10 +37,10 @@
     </header>
     <section class="section article-title">
         <div class="inner is-padding-horizontal-md is-padding-top-md">
-            <div class="text text-title">DICEOMANCERを日本語化する（あるいはBundleAssetの解析）</div>
+            <div class="text text-title">DICEOMANCERを日本語化する（あるいはAssetBundleの解析）</div>
             <p>2025-03-01</p>
             <div class="box is-flex is-baseline is-margin-bottom-xxl">
-                <a href="https://twitter.com/intent/tweet?text=DICEOMANCERを日本語化する（あるいはBundleAssetの解析）%20%7C%20%40pishitaro_%0Ahttps%3A%2F%2Fblog.p4ko.com%2Fposts%2Fdicemancer-translate%2F"
+                <a href="https://twitter.com/intent/tweet?text=DICEOMANCERを日本語化する（あるいはAssetBundleの解析）%20%7C%20%40pishitaro_%0Ahttps%3A%2F%2Fblog.p4ko.com%2Fposts%2Fdicemancer-translate%2F"
                     target="_blank" rel="noopener"><i class="fa-brands fa-square-twitter fa-2xl"></i></a>
             </div>
         </div>
@@ -78,7 +78,7 @@
 &nbsp; &nbsp; &nbsp;0 MetadataCollection m_Metadata
 &nbsp; &nbsp; &nbsp; 0 IMetadata m_Items
 &nbsp; &nbsp; &nbsp; &nbsp;0 Array Array (0 items)
-&nbsp; &nbsp; &nbsp; &nbsp; 0 int size = 0</code></pre><p><br>これを置き換えていけば行けそうだ。<br><br></p><h1 id="h20d9cc4557">ハッシュチェック</h1><p><br>で、適当に一個置き換えてみたが、<br><br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/727acc659d5e436897e0f55cd3c0d0a2/image.png" alt=""><br><br>だめやんけ<br><br>ツールややり方がおかしいのかと思って、他のツールを試したりバイナリを比較したりしてみたがどうもだめなので、これは何か整合性のチェックをしているなという感じ。<br><br>っていうか、ファイル名を見るとなんか末尾ハッシュっぽくね？<br><br><code>Ability_zh-Hans-CAB-94da1c08ce5122fffd4ef4f65ff0dbbb-1042738465642658668.txt</code>  <br><br>というわけでググるとやっぱりハッシュチェックをしているらしい。が、catalog.jsonの設定を変えればチェックを無効にできるっぽい。<br><br><a href="https://note.com/bliz21/n/n3236d5d780b7" target="_blank" rel="noopener noreferrer">HashチェックのあるAssets\.Bundleの改造の仕方｜Bliz</a><br><br>できました。<br><br></p><h1 id="hafce13b89f">やるだけ</h1><p><br>というわけであとは<code>diceomancer_ja.xliff</code> を基に<code>localization-string-tables-chinese(simplified)(zh-hans)_assets_all.bundle</code><br>から抽出したこいつらの中身を置換していけばよい。<br><br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/683bbf3c6b364ffb9623de9abf641a9b/image.png" alt=""><br><br>置換コード<br></p><pre><code>import os
+&nbsp; &nbsp; &nbsp; &nbsp; 0 int size = 0</code></pre><p><br>これを置き換えていけば行けそうだ。<br><br></p><h1 id="h20d9cc4557">ハッシュチェック</h1><p><br>で、適当に一個置き換えてみたが、<br><br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/727acc659d5e436897e0f55cd3c0d0a2/image.png" alt=""><br><br>だめやんけ<br><br>ツールややり方がおかしいのかと思って、他のツールを試したりバイナリを比較したりしてみたがどうもだめなので、これは何か整合性のチェックをしているなという感じ。<br><br>っていうか、ファイル名を見るとなんか末尾ハッシュっぽい。<br><br><code>Ability_zh-Hans-CAB-94da1c08ce5122fffd4ef4f65ff0dbbb-1042738465642658668.txt</code>  <br><br>ググるとやっぱりハッシュチェックをしているらしい。が、catalog.jsonの設定を変えればチェックを無効にできるっぽい。<br><br><a href="https://note.com/bliz21/n/n3236d5d780b7" target="_blank" rel="noopener noreferrer">HashチェックのあるAssets\.Bundleの改造の仕方｜Bliz</a><br><br>できました。<br><br></p><h1 id="hafce13b89f">やるだけ</h1><p><br>というわけであとは<code>diceomancer_ja.xliff</code> を基に<code>localization-string-tables-chinese(simplified)(zh-hans)_assets_all.bundle</code><br>から抽出したこいつらの中身を置換していけばよい。<br><br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/683bbf3c6b364ffb9623de9abf641a9b/image.png" alt=""><br><br>置換コード<br></p><pre><code>import os
 import re
 import sys
 import xml.etree.ElementTree as ET
@@ -227,7 +227,7 @@ if __name__ == "__main__":
 &nbsp; &nbsp; txt_output_dir = sys.argv[3]
 &nbsp; &nbsp; main(xliff_path, txt_input_dir, txt_output_dir)
 
-</code></pre><p><br>置換出来たら、UABEAのImport Dumpして保存すれば、置換済みの<code>localization-string-tables-chinese(simplified)(zh-hans)_assets_all.bundle</code>が出来上がるのでこれを元の位置に置いてあげればよい。<br><br>というわけで無事日本語化に成功したのであった。<br><br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/9ea5c1335b0243a6bf9c00b167984d72/image.png" alt=""><br><br>中々面白い作業だった。めでたしめでたし。</p>
+</code></pre><p><br>置換出来たら、UABEAのImport Dumpして保存すれば、置換済みの<code>localization-string-tables-chinese(simplified)(zh-hans)_assets_all.bundle</code>が出来上がるのでこれを元の位置に置いてあげればよい。<br><br>というわけで無事日本語化に成功したのでありました。<br><br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/9ea5c1335b0243a6bf9c00b167984d72/image.png" alt=""><br><br>めでたしめでたし。</p>
             </div>
         </div>
     </section>
