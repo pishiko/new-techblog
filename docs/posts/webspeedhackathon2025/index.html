@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Web Speed Hackathon 2025に参加しました</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.0/css/all.css">
+    <link rel="icon" type="image/png" href="/assets/favicons/icon-32x32.png" />
+    <link rel="apple-touch-icon" href="/assets/favicons/apple-touch-icon-152x152.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/atom-one-dark.min.css">
+    <meta property="og:title" content="Web Speed Hackathon 2025に参加しました" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://blog.p4ko.com/posts/webspeedhackathon2025" />
+    <meta property="og:image" content="https://blog.p4ko.com/assets/ogp.png" />
+    <meta property="og:site_name" content="blog.p4ko.com" />
+    <meta name="twitter:card" content="summary" />
+</head>
+
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <header>
+        <div class="section box">
+            <div class="header-inner inner grid is-center">
+                <a class="poszero-button grid is-center" href="/">
+                    <svg class="poszero" width="37" height="34" viewBox="0, 0, 37, 34"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="0,0 37,0 37,18 27,18 27,34 10,34 10,18 0,18" fill="#FFA9D4" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+        </div>
+    </header>
+    <section class="section article-title">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+            <div class="text text-title">Web Speed Hackathon 2025に参加しました</div>
+            <p>2025-03-28</p>
+            <div class="box is-flex is-baseline is-margin-bottom-xxl">
+                <a href="https://twitter.com/intent/tweet?text=Web Speed Hackathon 2025に参加しました%20%7C%20%40pishitaro_%0Ahttps%3A%2F%2Fblog.p4ko.com%2Fposts%2Fwebspeedhackathon2025%2F"
+                    target="_blank" rel="noopener"><i class="fa-brands fa-square-twitter fa-2xl"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section article">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+
+            <div class="wysiwyg">
+                <h2 id="hb2aa2bcb93">Web Speed Hackathon 2025 とは</h2><p><br>CA主催のフロントメインのパフォーマンスチューニングコンテストです。激重webアプリを渡されて、2日間でどれだけLighthouseのスコアを上げられるかを競います。<br><br><a href="https://cyberagent.connpass.com/event/338797/" target="_blank" rel="noopener noreferrer">Web Speed Hackathon 2025【一般応募用】- connpass</a><br><br>今年の題材は架空の動画配信サービス「AREMA」でした。<br><br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/28e1ebf04bad40619ae5edbea6cf6acc/image.png" alt=""><br><br>ちなみにまだ採点のbotは動いてると思うので、今からでも挑戦することはできると思います。以下にはネタバレも含まれるので、触ってみたい方はまず挑戦してみてはいかがでしょうか。</p><h2 id="hcf83e1357e"><br></h2><p><br></p><h2 id="hadbe534c76">事前勉強</h2><p>初参加だったので、軽く予習をすることに。フロントのパフォーマンスチューニングといえばということで、mizchiさんのjsconfの発表がいい感じ。</p><iframe class="embedly-embed" src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FAI2V3BKO-3A%3Ffeature%3Doembed&display_name=YouTube&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DAI2V3BKO-3A&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FAI2V3BKO-3A%2Fhqdefault.jpg&type=text%2Fhtml&schema=youtube" width="560" height="315" scrolling="no" title="YouTube embed" frameborder="0" allow="autoplay; fullscreen; encrypted-media; picture-in-picture;" allowfullscreen="true"></iframe><p><br><br>それから2024年の問題もちょっと見てみました。バンドラーの設定・lazy loading・N+1あたりはなんとなく分かってまあいけるべという感じで挑んでみました。<br></p><h2 id="ha782f15665">予選通過</h2><p><br>朝10時の起床に成功。予選突破です。以下はざっくり時系列順のやったことです。<br></p><ul><li>ネットワークを見る<ul><li>jsがデカすぎるのでとりあえずminifyとかしよう<ul><li>webpack configを弄る</li><li>BundleAnalyzerで見る</li><li>ffmpeg-wasmが重すぎるので消す</li></ul></li><li>初期表示にいらない画像が大量に読み込まれている<ul><li>lazy importを消す</li><li>imgを<code>loading=lazy</code>にする</li><li>画像アセットがデカすぎるので<code>w=640px</code>くらいにした</li></ul></li><li>index.htmlがデカすぎる<ul><li>ssr用のRecommendedのエンドポイントのプリフェッチデータがデカすぎるのでレスポンスを必要最低限にする</li><li><code>renderToString</code>と<code>StaticRouterProvider hydrate={true}</code>でSSRにしてみる</li></ul></li><li>無駄なリクエストを消す<ul><li>プリフェッチデータを使用して、無駄なリクエストを消す</li></ul></li></ul></li><li>パフォーマンスを見る<ul><li>unocssの初期化が重すぎるということがわかる<ul><li>serverで事前にcssを吐き出すようにしてみる</li><li>やりたいことはできたが、そもそも初期化が重いのでruntime unocssを完全に消してみる<ul><li>スタイルが壊れる</li><li>unocssは初期描写後も動的にスタイルを追加していくので、動的に変化するようなclassはstyleに逃がす<ul><li><code>className={`w-[${itemWidth}px]...</code> みたいなのを倒していく作業</li></ul></li><li>モーダルとかはAIパワーでtailwindからstyleに全部逃がした</li></ul></li></ul></li><li>Hoverが重すぎる<ul><li>カーソル位置から自身がHover中か検知するコンポーネントが重いので<code>onMouseEnter/Leave</code>にする</li></ul></li></ul></li></ul><p><br>なんて感じでやっていたらここで時間切れ。VRTテストにunocssで壊れたスタイルを通すのに時間を使いすぎました。<br><br>最終結果は174点でした。ユーザーフローを測定してもらうために200点の足切りがあったのですが、そこを超えられず。<br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/ad56902a88234c4089d322dbbdea91fe/image.png" alt=""></p><h2 id="hf3604f58bd">やれなかったこと</h2><ul><li>chunk</li><li>JsEllipsis<ul><li>時間なかった</li></ul></li><li>LayoutShift改善<ul><li>動画とかにaspect-ratio書いてあげるだけだった</li></ul></li><li>いらんライブラリ整理<ul><li>ffmpeg-wasmはコスパいいからやったけど、他はそんな時間ないです</li></ul></li><li>cssテク<ul><li>カードサイズの計算とかもcssでやれたらしい。cssなんもわからん</li></ul></li><li>画像<ul><li>svgの中にフォントデータが埋まってるのでいい感じにできるらしい。pngに変換しちゃったｗ</li><li>画像は、表示場所に合わせて複数の画像サイズを用意しても良かったなーと今更思う。</li><li>gif動画は重いので動画にした方がよい</li></ul></li><li>CDN<ul><li>cloudfrontで無料でいい感じにできたはず。次はやる</li></ul></li></ul><p><br>全体的にLCPとかFCPとか分かってなかったので、そこを意識する必要があったなーという感じでした。<br></p><h2 id="h9be0c3393d">おわりに</h2><p>悔しい結果となりましたが、devtoolの使い方やライブラリの知識など、全体的に学びが多かったですし、なにより楽しかったです。来年も開催されるらしいので、また強くなって帰ってきたいと思います。主催の方、本当にありがとうございました！</p>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>
