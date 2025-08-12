@@ -1,13 +1,16 @@
+import re
 from client import Article
 from jinja2 import Environment, FileSystemLoader
 import os
 import shutil
 import sys
+from github import render_repo_card
 
 env = Environment(loader=FileSystemLoader('./template',encoding='utf-8'))
 
 def create_article(article:Article,dist_path:str,template_path='index.html'):
     tmpl = env.get_template(template_path)
+    article.html = github(article.html)
     html = tmpl.render(article=article)
     
     path = f'{dist_path}/{article.url}'
@@ -25,6 +28,24 @@ def create_top(articles:list[Article],dist_path:str,template_path='top.html'):
         f.write(html)
     return
 
+pattern = re.compile(
+    r'<a\b[^>]*\bhref=["\'](?:https?:)?//(?:www\.)?github\.com/'
+    r'(?P<user>[A-Za-z0-9](?:-?[A-Za-z0-9]){0,38})/'
+    r'(?P<repo>[A-Za-z0-9._-]+)'
+    r'(?:/?)(?=["\'])["\'][^>]*>'
+    r'(?:https?:)?//(?:www\.)?github\.com/'
+    r'(?P=user)/(?P=repo)(?:/?)</a>',
+    re.IGNORECASE
+)
+
+def replace_anchor(match):
+    user = match.group('user')
+    repo = match.group('repo')
+    return render_repo_card(user, repo)
+
+def github(html:str) -> str:
+    html = pattern.sub(replace_anchor, html)
+    return html
 
 if __name__ == '__main__':
     from client import get_articles
