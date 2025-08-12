@@ -50,7 +50,31 @@
         <div class="inner is-padding-horizontal-md is-padding-top-md">
 
             <div class="wysiwyg">
-                <p><br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/6bcdbee2c14c46d8bc005a1dd6d87111/image.png" alt=""><br><br>Steamで発売されている<a href="https://store.steampowered.com/app/2501600/DICEOMANCER/?l=japanese" target="_blank" rel="noopener noreferrer">DICEOMANCER</a>というStSフォロワーのゲームが中々に面白い。<br><br>が、残念なことにこのゲーム、日本語に対応していない。<br><br>最初は英語を読みながら頑張っていたが、ゲームの特性上かなり気合を入れて読む必要があり、流石に辛くなってきたので日本語化を試みることにした。<br><br></p><h1 id="ha41fc1895d">翻訳データをどうするか</h1><p><br>最初はChatGPTで翻訳でもしようかと思っていたが、公式discordを見てみるとどうやらCrowdinには既に日本語の翻訳データは存在しているらしい。（あるなら反映してくれてもいいじゃんね...）<br><br><a href="https://crowdin.com/project/diceomancer/ja" target="_blank" rel="noopener noreferrer">https://crowdin.com/project/diceomancer/ja</a><br><br>となれば後は言語ファイルを置き換えるだけなので問題は無さそうだ。<br><br>Export In XLIFFから一つのファイルでダウンロードすることが出来る。<br><br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/67bb788105914d0390df7e69ebe894f7/image.png" alt=""><br><br></p><h1 id="h12149789f5">翻訳のアセットを探す</h1><p><code>SteamLibrary\steamapps\common\DICEOMANCER\Diceomancer_Data\StreamingAssets\aa\StandaloneWindows64</code> あたりを覗いていると、翻訳ファイルっぽいものが見つかる。<br><br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/fa49b4082e4c46c49dd18cd5f6b28775/image.png" alt=""><br><br>調べてみると、UnityのAssetBundleというものらしく、どうやらUABEというツールで抽出可能らしい。<br><br><a href="https://github.com/nesrak1/UABEA" target="_blank" rel="noopener noreferrer">https://github.com/nesrak1/UABEA</a><br><br>これを使って、試しに中国語のファイルをdumpしてみるとこんな感じ。</p><pre><code>0 MonoBehaviour Base
+                <p><br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/6bcdbee2c14c46d8bc005a1dd6d87111/image.png" alt=""><br><br>Steamで発売されている<a href="https://store.steampowered.com/app/2501600/DICEOMANCER/?l=japanese" target="_blank" rel="noopener noreferrer">DICEOMANCER</a>というStSフォロワーのゲームが中々に面白い。<br><br>が、残念なことにこのゲーム、日本語に対応していない。<br><br>最初は英語を読みながら頑張っていたが、ゲームの特性上かなり気合を入れて読む必要があり、流石に辛くなってきたので日本語化を試みることにした。<br><br></p><h1 id="ha41fc1895d">翻訳データをどうするか</h1><p><br>最初はChatGPTで翻訳でもしようかと思っていたが、公式discordを見てみるとどうやらCrowdinには既に日本語の翻訳データは存在しているらしい。（あるなら反映してくれてもいいじゃんね...）<br><br><a href="https://crowdin.com/project/diceomancer/ja" target="_blank" rel="noopener noreferrer">https://crowdin.com/project/diceomancer/ja</a><br><br>となれば後は言語ファイルを置き換えるだけなので問題は無さそうだ。<br><br>Export In XLIFFから一つのファイルでダウンロードすることが出来る。<br><br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/67bb788105914d0390df7e69ebe894f7/image.png" alt=""><br><br></p><h1 id="h12149789f5">翻訳のアセットを探す</h1><p><code>SteamLibrary\steamapps\common\DICEOMANCER\Diceomancer_Data\StreamingAssets\aa\StandaloneWindows64</code> あたりを覗いていると、翻訳ファイルっぽいものが見つかる。<br><br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/fa49b4082e4c46c49dd18cd5f6b28775/image.png" alt=""><br><br>調べてみると、UnityのAssetBundleというものらしく、どうやらUABEというツールで抽出可能らしい。<br><br>    <div style="font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji; border: 1px solid rgb(48, 54, 61); border-radius: 6px; background: transparent; padding: 16px; font-size: 14px; line-height: 1.5; color: #24292e;">
+      <div style="display: flex; align-items: center;">
+        <svg style="fill: rgb(139, 148, 158); margin-right: 8px;" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+        <span style="font-weight: 600; color: rgb(88, 166, 255);">
+          <a style="text-decoration: none; color: inherit;" href="https://github.com/nesrak1/UABEA">nesrak1/UABEA</a>
+        </span>
+      </div>
+      <div style="display: none; font-size: 12px; color: rgb(139, 148, 158);">Forked from <a style="color: inherit; text-decoration: none;" href=""></a></div>
+      <div style="font-size: 12px; margin-bottom: 16px; margin-top: 8px; color: rgb(139, 148, 158);">c# uabe for newer versions of unity</div>
+      <div style="font-size: 12px; color: rgb(139, 148, 158); display: flex;">
+        <div style=" margin-right: 16px;">
+          <span style="width: 12px; height: 12px; border-radius: 100%; background-color: #178600; display: inline-block; top: 1px; position: relative;"></span>
+          <span>C#</span>
+        </div>
+        <div style="display: flex; align-items: center; margin-right: 16px;">
+          <svg style="fill: rgb(139, 148, 158);" aria-label="stars" viewBox="0 0 16 16" version="1.1" width="16" height="16" role="img"><path fill-rule="evenodd" d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25zm0 2.445L6.615 5.5a.75.75 0 01-.564.41l-3.097.45 2.24 2.184a.75.75 0 01.216.664l-.528 3.084 2.769-1.456a.75.75 0 01.698 0l2.77 1.456-.53-3.084a.75.75 0 01.216-.664l2.24-2.183-3.096-.45a.75.75 0 01-.564-.41L8 2.694v.001z"></path></svg>
+          &nbsp; <span>1631</span>
+        </div>
+        <div style="display: flex; align-items: center;">
+          <svg style="fill: rgb(139, 148, 158);" aria-label="fork" viewBox="0 0 16 16" version="1.1" width="16" height="16" role="img"><path fill-rule="evenodd" d="M5 3.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm0 2.122a2.25 2.25 0 10-1.5 0v.878A2.25 2.25 0 005.75 8.5h1.5v2.128a2.251 2.251 0 101.5 0V8.5h1.5a2.25 2.25 0 002.25-2.25v-.878a2.25 2.25 0 10-1.5 0v.878a.75.75 0 01-.75.75h-4.5A.75.75 0 015 6.25v-.878zm3.75 7.378a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm3-8.75a.75.75 0 100-1.5.75.75 0 000 1.5z"></path></svg>
+          &nbsp; <span>188</span>
+        </div>
+      </div>
+    </div>
+    <br><br>これを使って、試しに中国語のファイルをdumpしてみるとこんな感じ。</p><pre><code>0 MonoBehaviour Base
 &nbsp;0 PPtr&lt;GameObject&gt; m_GameObject
 &nbsp; 0 int m_FileID = 0
 &nbsp; 0 SInt64 m_PathID = 0

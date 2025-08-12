@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>ディ◯ゴスティーニ 週間 ブラウザを作る Part1</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.0/css/all.css">
+    <link rel="icon" type="image/png" href="/assets/favicons/icon-32x32.png" />
+    <link rel="apple-touch-icon" href="/assets/favicons/apple-touch-icon-152x152.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/atom-one-dark.min.css">
+    <meta property="og:title" content="ディ◯ゴスティーニ 週間 ブラウザを作る Part1" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://blog.p4ko.com/posts/browser-engineering-1" />
+    <meta property="og:image" content="https://blog.p4ko.com/assets/ogp.png" />
+    <meta property="og:site_name" content="blog.p4ko.com" />
+    <meta name="twitter:card" content="summary" />
+</head>
+
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <header>
+        <div class="section box">
+            <div class="header-inner inner grid is-center">
+                <a class="poszero-button grid is-center" href="/">
+                    <svg class="poszero" width="37" height="34" viewBox="0, 0, 37, 34"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="0,0 37,0 37,18 27,18 27,34 10,34 10,18 0,18" fill="#FFA9D4" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+        </div>
+    </header>
+    <section class="section article-title">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+            <div class="text text-title">ディ◯ゴスティーニ 週間 ブラウザを作る Part1</div>
+            <p>2025-08-12</p>
+            <div class="box is-flex is-baseline is-margin-bottom-xxl">
+                <a href="https://twitter.com/intent/tweet?text=ディ◯ゴスティーニ 週間 ブラウザを作る Part1%20%7C%20%40pishitaro_%0Ahttps%3A%2F%2Fblog.p4ko.com%2Fposts%2Fbrowser-engineering-1%2F"
+                    target="_blank" rel="noopener"><i class="fa-brands fa-square-twitter fa-2xl"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section article">
+        <div class="inner is-padding-horizontal-md is-padding-top-md">
+
+            <div class="wysiwyg">
+                <p>以前からやりたいと思っていたブラウザの実装をやります。<br></p><h3 id="hfbf2743935">目標</h3><ul><li>HTML4.0を一通り実装することを目標にします。<ul><li>「阿部寛のホームページ」を完璧に描画したい。</li><li>jsは一旦なしで。一段落して気が向いたらインタプリタから作ります。</li></ul></li></ul><p><br></p><h3 id="hc705a9411d">方針</h3><ul><li>言語はgolang、グラフィックライブラリとしてebitengineを使用します。<ul><li>ebitengineの抽象度がちょうどいいので。ファミコンエミュレーターのときにもお世話になりました。</li></ul></li><li><a href="https://browser.engineering/index.html" target="_blank" rel="noopener noreferrer">Web Browser Engineering</a> の流れを参考に実装していきます。<ul><li>webで無料で公開されています。</li><li>Pythonで実装していますが、流れはかなり参考になります。ステップバイステップで本当にいい本。</li></ul></li><li>ある程度までいったらHTML4.0の仕様を眺めて埋めていきます。</li><li>テストとかは適宜探します。</li></ul><p><br>リポジトリ：<br>    <div style="font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji; border: 1px solid rgb(48, 54, 61); border-radius: 6px; background: transparent; padding: 16px; font-size: 14px; line-height: 1.5; color: #24292e;">
+      <div style="display: flex; align-items: center;">
+        <svg style="fill: rgb(139, 148, 158); margin-right: 8px;" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+        <span style="font-weight: 600; color: rgb(88, 166, 255);">
+          <a style="text-decoration: none; color: inherit;" href="https://github.com/pishiko/tenmusu">pishiko/tenmusu</a>
+        </span>
+      </div>
+      <div style="display: none; font-size: 12px; color: rgb(139, 148, 158);">Forked from <a style="color: inherit; text-decoration: none;" href=""></a></div>
+      <div style="font-size: 12px; margin-bottom: 16px; margin-top: 8px; color: rgb(139, 148, 158);">A hand-shaped browser with ebiten inside</div>
+      <div style="font-size: 12px; color: rgb(139, 148, 158); display: flex;">
+        <div style=" margin-right: 16px;">
+          <span style="width: 12px; height: 12px; border-radius: 100%; background-color: #00ADD8; display: inline-block; top: 1px; position: relative;"></span>
+          <span>Go</span>
+        </div>
+        <div style="display: none; align-items: center; margin-right: 16px;">
+          <svg style="fill: rgb(139, 148, 158);" aria-label="stars" viewBox="0 0 16 16" version="1.1" width="16" height="16" role="img"><path fill-rule="evenodd" d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25zm0 2.445L6.615 5.5a.75.75 0 01-.564.41l-3.097.45 2.24 2.184a.75.75 0 01.216.664l-.528 3.084 2.769-1.456a.75.75 0 01.698 0l2.77 1.456-.53-3.084a.75.75 0 01.216-.664l2.24-2.183-3.096-.45a.75.75 0 01-.564-.41L8 2.694v.001z"></path></svg>
+          &nbsp; <span>0</span>
+        </div>
+        <div style="display: none; align-items: center;">
+          <svg style="fill: rgb(139, 148, 158);" aria-label="fork" viewBox="0 0 16 16" version="1.1" width="16" height="16" role="img"><path fill-rule="evenodd" d="M5 3.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm0 2.122a2.25 2.25 0 10-1.5 0v.878A2.25 2.25 0 005.75 8.5h1.5v2.128a2.251 2.251 0 101.5 0V8.5h1.5a2.25 2.25 0 002.25-2.25v-.878a2.25 2.25 0 10-1.5 0v.878a.75.75 0 01-.75.75h-4.5A.75.75 0 015 6.25v-.878zm3.75 7.378a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm3-8.75a.75.75 0 100-1.5.75.75 0 000 1.5z"></path></svg>
+          &nbsp; <span>0</span>
+        </div>
+      </div>
+    </div>
+     <br></p><h2 id="h1da103b860">Day1: httpクライアントを作る</h2><p><a href="https://browser.engineering/http.html" target="_blank" rel="noopener noreferrer">https://browser.engineering/http.html</a><br><br>愚直にURLをパースして、<br><br>tcpコネクションにwriteして</p><pre><code>    conn, err := net.Dial("tcp", u.Host+":"+strconv.Itoa(u.Port))
+
+  	request := "GET " + u.path + " HTTP/1.1\r\n"
+  	request += "Host: " + u.host + "\r\n"
+  	request += "\r\n"
+  	conn.Write([]byte(request))</code></pre><p><br>readしてパースします。<br>1行ずつ読んでいって、1行目がstatus, 2行目以降がheaders。空行を挟んで、残りはbody。</p><pre><code>	reader := bufio.NewReader(conn)
+
+	// status line
+	statusLine, _ := readLine(reader)
+	parts := strings.SplitN(statusLine, " ", 3)
+
+	version := parts[0]
+	status := parts[1]
+	explanation := parts[2]</code></pre><p><br>実行結果はこんな感じ。</p><pre><code>Status line:
+HTTP/1.1 200 OK
+
+Response headers:
+content-length: 1256
+connection: keep-alive
+content-type: text/html
+etag: "84238dfc8092e5d9c0dac8ef93371a07:1736799080.121134"
+last-modified: Mon, 13 Jan 2025 20:11:20 GMT
+cache-control: max-age=1021
+date: Fri, 11 Jul 2025 18:33:38 GMT
+
+Response body:
+&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Example Domain&lt;/title&gt;
+...</code></pre><p><br>実装：<a href="https://github.com/pishiko/tenmusu/pull/1/files" target="_blank" rel="noopener noreferrer">https://github.com/pishiko/tenmusu/pull/1/files</a><br><br><br></p><h2 id="hf5374c91ed">Day2: 文字を表示する</h2><p><a href="https://browser.engineering/graphics.html" target="_blank" rel="noopener noreferrer">https://browser.engineering/graphics.html</a><br><br>雑にhtmlをパースして、雑に表示してみます。<br><br>タグ以外を抽出する、雑htmlパーサー。</p><pre><code>func lex(body string) string {
+	isInTag := false
+	text := ""
+	for _, char := range body {
+		if char == '&lt;' {
+			isInTag = true
+		} else if char == '&gt;' {
+			isInTag = false
+		} else if !isInTag {
+			text += string(char)
+		}
+	}
+	return text
+}</code></pre><p><br>これを雑にレンダリングしていきます。</p><pre><code>func (b *Window) Draw(screen *ebiten.Image) {
+	y := 0 + b.scrollY // カーソルY＋スクロールのオフセット
+	x := 0&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;// カーソルX
+	for _, c := range b.text {
+        // 一文字ずつ読んで、widthとheightを取得
+  		w, h := text.Measure(string(c), b.fontFace, 48)
+  
+  		// 右端まで言ったら改行
+  		if x+int(w) &gt; screen.Bounds().Dx() {
+  			x = 0
+  			y += int(h)
+  		}
+  		// y+h &lt; 0 はスキップ
+  		if y+int(h) &lt; 0 {
+  			x += int(w) // Move to the next character
+  			continue
+  		}
+  
+  		// y &gt; 画面下に到達時点で描画を終了
+  		if y &gt; screen.Bounds().Dy() {
+  			break
+  		}
+  
+  		// カーソル位置に文字を描画
+  		op := &amp;text.DrawOptions{}
+  		op.GeoM.Translate(float64(x), float64(y))
+  		text.Draw(screen, string(c), b.fontFace, op)
+  
+  		// カーソルXをずらす
+  		x += int(w)
+  	}
+  }</code></pre><p><br>フォントはmacOSのシステムフォントを利用します</p><pre><code>    normal := loadFontFaceSource("/System/Library/Fonts/ヒラギノ角ゴシック W3.ttc", 2)
+	bold := loadFontFaceSource("/System/Library/Fonts/ヒラギノ角ゴシック W6.ttc", 2)</code></pre><p><br>実行結果はこんな感じ。ここまでは準備運動と言ったところでしょうか。<br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/134621a2e91141379a2f58c2562649be/465708155-4e441edd-a94d-4b37-9a07-e9e3b3291081.png" alt=""><br><br>実装：<a href="https://github.com/pishiko/tenmusu/pull/2/files" target="_blank" rel="noopener noreferrer">https://github.com/pishiko/tenmusu/pull/2/files</a><br></p><h2 id="hf9632d6b7d">Day3: 文章レイアウト</h2><p><a href="https://browser.engineering/text.html" target="_blank" rel="noopener noreferrer">https://browser.engineering/text.html</a><br><br>htmlパーサーをちょっと実装します。パース後はToken構造体となります。木構造にはまだしません。</p><pre><code>type Token struct {
+	Type&nbsp; TokenType //Text, Tag
+	Value string
+}
+
+func Lex(body string) []Token {
+	isInTag := false
+	buf := ""
+	tokens := []Token{}
+	for _, char := range body {
+		switch char {
+		case '&lt;':
+			isInTag = true
+			if buf != "" {
+				tokens = append(tokens, Token{Type: Text, Value: buf})
+				buf = ""
+			}
+		case '&gt;':
+			isInTag = false
+			tokens = append(tokens, Token{Type: Tag, Value: buf})
+			buf = ""
+		default:
+			buf += string(char)
+		}
+	}
+	if !isInTag &amp;&amp; buf != "" {
+		tokens = append(tokens, Token{Type: Text, Value: buf})
+	}
+	return tokens
+}</code></pre><p><br>Tokenを、描画に必要な情報を持つDrawable構造体に変換します。この変換はつまり、文字の表示位置を決めるレイアウトです。</p><pre><code>type Drawable struct {
+	word&nbsp; &nbsp;string
+	font&nbsp; &nbsp;*text.GoTextFace
+	x, y&nbsp; &nbsp;float64
+	style&nbsp; string
+	weight string
+	w, h&nbsp; &nbsp;float64
+}</code></pre><p><br><br>ここからは本格的にテキストのレイアウトと格闘することになります。単語単位での改行や、異なるサイズでのレイアウトを実装していきます。<br><br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/6fc6a45d4ecd430ca8936e0986c5c941/glyph_metrics_2x.png" alt=""><br>ref: <a href="https://developer.apple.com/library/archive/documentation/TextFonts/Conceptual/CocoaTextArchitecture/Art/glyph_metrics_2x.png" target="_blank" rel="noopener noreferrer">https://developer.apple.com/library/archive/documentation/TextFonts/Conceptual/CocoaTextArchitecture/Art/glyph</a><a href="https://developer.apple.com/library/archive/documentation/TextFonts/Conceptual/CocoaTextArchitecture/Art/glyph_metrics_2x.png" target="_blank" rel="noopener noreferrer"><em>metrics</em></a><a href="https://developer.apple.com/library/archive/documentation/TextFonts/Conceptual/CocoaTextArchitecture/Art/glyph_metrics_2x.png" target="_blank" rel="noopener noreferrer">2x.png</a><br><br>フォントファイルには文字のベクターデータの他に、上記のようなレイアウトに関する情報が含まれています。フォント情報はebitengineのインタフェースから取れますが、レイアウトは自前で実装します。<br><br>レイアウトを行っていきます。各Tokenのテキスト、つまりひとまとまりのプレーンテキストに対して、1単語ずつ見ていきます。<br>LineにWordを貯めて、次のWordが見切れるようであればFlushします。Flushでは1Line分のy軸のレイアウトを確定させます。</p><pre><code>func (l *Layout) Drawables() []Drawable {
+	for _, token := range l.tokens {
+		switch token.Type {
+		case html.Text:
+			for _, word := range strings.Split(token.Value, " ") {
+				f := &amp;text.GoTextFace{
+					Source:&nbsp; &nbsp; source,
+					Direction: text.DirectionLeftToRight,
+					Size:&nbsp; &nbsp; &nbsp; l.size,
+					Language:&nbsp; language.Japanese,
+				}
+				// width, heightを計算                
+				w, h := text.Measure(word, f, f.Metrics().HLineGap)
+
+				// 右端まで言ったら改行
+				if l.xCursor+w &gt; float64(l.screenRect.Dx()) {
+					l.flush()
+				}
+
+				// Lineに追加
+				l.line = append(l.line, Drawable{
+					word:&nbsp; &nbsp;word,
+					font:&nbsp; &nbsp;f,
+					x:&nbsp; &nbsp; &nbsp; l.xCursor,
+					y:&nbsp; &nbsp; &nbsp; l.yCursor,
+					style:&nbsp; l.style,
+					weight: l.weight,
+					w:&nbsp; &nbsp; &nbsp; w,
+					h:&nbsp; &nbsp; &nbsp; h,
+				})
+
+				// 次の単語のX座標を更新
+				l.xCursor += w
+				spaceWidth, _ := text.Measure(" ", f, f.Metrics().HLineGap)
+				l.xCursor += spaceWidth
+			}
+		}
+	}
+	return l._drawables
+}</code></pre><p><br>Flushでは、フォント情報を基に単語のy座標を確定させます。Baselineに対して、胴がAcsent、脚がDescentです。胴の最大がBaselineになり、胴の最大＋脚の最大が行の高さになるわけです。行間も計算します。</p><pre><code>func (l *Layout) flush() {
+	maxAscent := 0.0
+	maxDescent := 0.0
+	maxGap := 0.0
+	for _, d := range l.line {
+		metrics := d.font.Metrics()
+
+		if metrics.HAscent &gt; maxAscent {
+			maxAscent = metrics.HAscent
+		}
+		if metrics.HDescent &gt; maxDescent {
+			maxDescent = metrics.HDescent
+		}
+		if metrics.HLineGap &gt; maxGap {
+			maxGap = metrics.HLineGap
+		}
+	}
+	for _, d := range l.line {
+		baseline := l.yCursor + maxAscent
+		y := baseline - d.font.Metrics().HAscent
+		l._drawables = append(l._drawables,
+			Drawable{
+				word:&nbsp; &nbsp;d.word,
+				font:&nbsp; &nbsp;d.font,
+				x:&nbsp; &nbsp; &nbsp; d.x,
+				y:&nbsp; &nbsp; &nbsp; y,
+				style:&nbsp; d.style,
+				weight: d.weight,
+				w:&nbsp; &nbsp; &nbsp; d.w,
+				h:&nbsp; &nbsp; &nbsp; d.h,
+			},
+		)
+	}
+	l.yCursor += (maxAscent + maxDescent) + maxGap
+	l.line = []Drawable{}
+	l.xCursor = 0
+}</code></pre><p><br>レイアウトは出来たので、サイズ変更のタグを反映していきます。と言っても簡単です。&lt;big&gt;だったら文字サイズを+4、&lt;/big&gt;だったら-4すればいいわけです。boldはフォントのweightを変えます。<br><br>italicは...実は奥が深いです。イタリック体というのは本来英語の筆記体なのですが、日本語にはそのようなものはないです。なので日本語は斜体(<span style="color:#474747">oblique</span>)になります。なので、単にSkewします。<br><br>これらは、バリアブルフォントと呼ばれる規格のフォントを使用すると楽なのですが、残念ながら日本語で傾きを制御できる無料のバリアブルフォントは無いようです。（文字数が英語とは桁違いなので...）</p><pre><code>func (l *Layout) Drawables() []Drawable {
+	for _, token := range l.tokens {
+		switch token.Type {
+		case html.Tag:
+			switch token.Value {
+			case "i":
+				l.style = "italic"
+			case "/i":
+				l.style = "roman"
+			case "em":
+				l.style = "italic"
+			case "/em":
+				l.style = "roman"
+			case "b":
+				l.weight = "bold"
+			case "/b":
+				l.weight = "normal"
+			case "strong":
+				l.weight = "bold"
+			case "/strong":
+				l.weight = "normal"
+			case "big":
+				l.size += 4.0
+			case "/big":
+				l.size -= 4.0
+			case "small":
+				l.size -= 2.0
+			case "/small":
+				l.size += 2.0
+			case "br":
+				l.flush()
+			case "/p":
+				l.flush()
+				l.yCursor += 16.0 // Add some space for paragraph
+			}
+		case html.Text:
+			for _, word := range&nbsp;
+...</code></pre><p><br>実行結果。左がChrome、右が実装。<br><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/88b362129cf547c28570655e4e19f910/467166148-daef4edc-d13c-4e67-8851-90ee1e86b08c.png" alt=""><br>ようやくまともにプレーンテキストが表示できるようになりました。<br><br>実装：<a href="https://github.com/pishiko/tenmusu/pull/3/files" target="_blank" rel="noopener noreferrer">https://github.com/pishiko/tenmusu/pull/3/files</a><br></p><h3 id="hb0f7663276">続く</h3><p>次回はいよいよ木構造でパースしていきます。<br></p>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

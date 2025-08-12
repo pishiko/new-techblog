@@ -50,7 +50,31 @@
         <div class="inner is-padding-horizontal-md is-padding-top-md">
 
             <div class="wysiwyg">
-                <h2 id="h9707d3a59a">概要</h2><p><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/5822fd7f901b43388f353fae38af9544/chat.png?w=320&amp;h=568" alt=""><br>LINE の Bot を公開しました。<br>いままで身内向けの BOT を作ることはあったけど、初めてオープンなのを作りました。<br>LINE の BOT を作るには HTTP リクエストを受けるサーバーが必要なんですが、サーバーを立てるのはお金がかかります。そこで今回は無料でそれっぽいことができる GoogleAppsScript を用いてやってみました。<br>ソースコード&nbsp;<a href="https://github.com/pishiko/anonymous-linechatbot" target="_blank" rel="noopener noreferrer">https://github.com/pishiko/anonymous-linechatbot</a></p><h2 id="h91abbb51e5"><br><br>実装したこと</h2><ul><li>基本機能（発言を他の利用者に拡散）</li><li>アイコンの実装</li><li>ミュート機能</li></ul><h2 id="hc499e4ad38"><br><br>解説</h2><p><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/a13255c8bc5a48958ed876ca5a8f6020/chat2.png?w=720&amp;h=311" alt=""><br>まず LINE API で多数にメッセージを配信するには宛先の userId を指定する必要があります。しかし、Bot と友達になっているユーザーのリストは API では手に入らないため、自分で用意する必要があります。なので、友達登録されたときのイベントを使って記録していきます。<br>次に記録ですが、DB を GAS でお手軽に実装するには GoogleSpreadSheet を用います。視覚的にも分かりやすいし簡単だし、ちょっと遅いけど使えます。<br>アイコンはキューを GSS で実装して、友達登録時にユーザーリストに ID と一緒にします。友達をやめたときはアイコンキューに戻してやって、ユーザーリストから ID ごと消してやります。<br>ミュート機能はユーザーがミュートかどうかリストに保存して、LINE API のリッチメニューから操作できるようにします。リッチメニューは LINE&nbsp;@MANAGER&nbsp;からぽちぽちで作れます。リッチメニューのボタンが押されたらキーワードを発言するように設定して、それを GAS でキャッチします。<br>最後に発言をほかの登録者に拡散するようにします。LINE API のイベントでメッセージ受信をキャッチして、userId からユーザーリストを検索してアイコンを取得、そのあとユーザーリストの発信者以外かつミュートになっていない人に成形したメッセージを配信します。<br><br><br>おわり</p>
+                <h2 id="h9707d3a59a">概要</h2><p><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/5822fd7f901b43388f353fae38af9544/chat.png?w=320&amp;h=568" alt=""><br>LINE の Bot を公開しました。<br>いままで身内向けの BOT を作ることはあったけど、初めてオープンなのを作りました。<br>LINE の BOT を作るには HTTP リクエストを受けるサーバーが必要なんですが、サーバーを立てるのはお金がかかります。そこで今回は無料でそれっぽいことができる GoogleAppsScript を用いてやってみました。<br>ソースコード&nbsp;    <div style="font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji; border: 1px solid rgb(48, 54, 61); border-radius: 6px; background: transparent; padding: 16px; font-size: 14px; line-height: 1.5; color: #24292e;">
+      <div style="display: flex; align-items: center;">
+        <svg style="fill: rgb(139, 148, 158); margin-right: 8px;" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"></path></svg>
+        <span style="font-weight: 600; color: rgb(88, 166, 255);">
+          <a style="text-decoration: none; color: inherit;" href="https://github.com/pishiko/anonymous-linechatbot">pishiko/anonymous-linechatbot</a>
+        </span>
+      </div>
+      <div style="display: none; font-size: 12px; color: rgb(139, 148, 158);">Forked from <a style="color: inherit; text-decoration: none;" href=""></a></div>
+      <div style="font-size: 12px; margin-bottom: 16px; margin-top: 8px; color: rgb(139, 148, 158);">LINEで匿名掲示板のようなチャットができるサービス on GAS</div>
+      <div style="font-size: 12px; color: rgb(139, 148, 158); display: flex;">
+        <div style=" margin-right: 16px;">
+          <span style="width: 12px; height: 12px; border-radius: 100%; background-color: #f1e05a; display: inline-block; top: 1px; position: relative;"></span>
+          <span>JavaScript</span>
+        </div>
+        <div style="display: none; align-items: center; margin-right: 16px;">
+          <svg style="fill: rgb(139, 148, 158);" aria-label="stars" viewBox="0 0 16 16" version="1.1" width="16" height="16" role="img"><path fill-rule="evenodd" d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25zm0 2.445L6.615 5.5a.75.75 0 01-.564.41l-3.097.45 2.24 2.184a.75.75 0 01.216.664l-.528 3.084 2.769-1.456a.75.75 0 01.698 0l2.77 1.456-.53-3.084a.75.75 0 01.216-.664l2.24-2.183-3.096-.45a.75.75 0 01-.564-.41L8 2.694v.001z"></path></svg>
+          &nbsp; <span>0</span>
+        </div>
+        <div style="display: none; align-items: center;">
+          <svg style="fill: rgb(139, 148, 158);" aria-label="fork" viewBox="0 0 16 16" version="1.1" width="16" height="16" role="img"><path fill-rule="evenodd" d="M5 3.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm0 2.122a2.25 2.25 0 10-1.5 0v.878A2.25 2.25 0 005.75 8.5h1.5v2.128a2.251 2.251 0 101.5 0V8.5h1.5a2.25 2.25 0 002.25-2.25v-.878a2.25 2.25 0 10-1.5 0v.878a.75.75 0 01-.75.75h-4.5A.75.75 0 015 6.25v-.878zm3.75 7.378a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm3-8.75a.75.75 0 100-1.5.75.75 0 000 1.5z"></path></svg>
+          &nbsp; <span>0</span>
+        </div>
+      </div>
+    </div>
+    </p><h2 id="h91abbb51e5"><br><br>実装したこと</h2><ul><li>基本機能（発言を他の利用者に拡散）</li><li>アイコンの実装</li><li>ミュート機能</li></ul><h2 id="hc499e4ad38"><br><br>解説</h2><p><img src="https://images.microcms-assets.io/assets/a2f12ba91908497eab61a90567442944/a13255c8bc5a48958ed876ca5a8f6020/chat2.png?w=720&amp;h=311" alt=""><br>まず LINE API で多数にメッセージを配信するには宛先の userId を指定する必要があります。しかし、Bot と友達になっているユーザーのリストは API では手に入らないため、自分で用意する必要があります。なので、友達登録されたときのイベントを使って記録していきます。<br>次に記録ですが、DB を GAS でお手軽に実装するには GoogleSpreadSheet を用います。視覚的にも分かりやすいし簡単だし、ちょっと遅いけど使えます。<br>アイコンはキューを GSS で実装して、友達登録時にユーザーリストに ID と一緒にします。友達をやめたときはアイコンキューに戻してやって、ユーザーリストから ID ごと消してやります。<br>ミュート機能はユーザーがミュートかどうかリストに保存して、LINE API のリッチメニューから操作できるようにします。リッチメニューは LINE&nbsp;@MANAGER&nbsp;からぽちぽちで作れます。リッチメニューのボタンが押されたらキーワードを発言するように設定して、それを GAS でキャッチします。<br>最後に発言をほかの登録者に拡散するようにします。LINE API のイベントでメッセージ受信をキャッチして、userId からユーザーリストを検索してアイコンを取得、そのあとユーザーリストの発信者以外かつミュートになっていない人に成形したメッセージを配信します。<br><br><br>おわり</p>
             </div>
         </div>
     </section>
