@@ -8,42 +8,42 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
-  
+
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18.x'
-          
+          node-version: "18.x"
+
       - name: Build style
         run: |
           cd html
           npm install
           npm run build
           cd ../
-      
+
       - name: Setup Python
         uses: actions/setup-python@v3.1.3
         with:
           python-version: 3.11
           architecture: "x64"
-      
+
       - name: Install dependencies
         run: |
           cd ./ssg
           python -m pip install --upgrade pip
           python -m pip install requests jinja2 python-dotenv
-      
+
       - name: Build
         env:
           API_BASE_URI: ${{ secrets.API_BASE_URI }}
           MICROCMS_TOKEN: ${{ secrets.MICROCMS_TOKEN }}
         run: |
           cd ./ssg
-          python html.py
-      
+          python ssg.py
+
       - name: Push docs
         run: |
           git config --global user.name "pishiko"
@@ -55,9 +55,9 @@ jobs:
           fi
       - name: Notify Discord
         run: |
-            curl -H "Content-Type: application/json" \
-            -X POST \
-            -d '{
-              "content": "デプロイがトリガーされたよ〜"
-            }' \
-            ${{ secrets.DISCORD_WEBHOOK_URL }}
+          curl -H "Content-Type: application/json" \
+          -X POST \
+          -d '{
+            "content": "デプロイがトリガーされたよ〜"
+          }' \
+          ${{ secrets.DISCORD_WEBHOOK_URL }}
